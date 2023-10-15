@@ -1,18 +1,18 @@
 # persistenceG1_5
-Git du projet de Patrons et Composants
+Repository Git du projet de Patrons et Composants
 
 ## Description
 
-Ce projet est un projet qui a pour but d'apprendre les différents designe pattern 
-en utilisant Java, Maven et Sonar. Dans ce projet, à chaque itération on va ajouter une nouvelle
+Ce projet a pour but d'apprendre et d'appliquer les différents design patterns 
+en utilisant Java, Maven et Sonar. A chaque itération de ce projet sera ajoutée une nouvelle
 fonctionnalité.
 
-## Avancé
+## Avancée
 
-- Itération 1 : L'export JSON fonctionne correctement
-- Itération 2 : Le CTRL Z ne fonctionne pas correctement. Le problème vient du fait que l'on re dessine les figures par rapport à la frame et pas par rapport au Panel. Donc les formes se redessinent pas aux positions ou elles étaient avant.
+- Itération 1 : L'ajout de la fonctionnalité 'export JSON' qui fonctionne correctement.
+- Itération 2 : L'ajout d'une deuxième fonctionnalité 'CTRL Z' qui pour  le moment ne fonctionne pas correctement. Bien que nous arrivons à supprimer le shape qu'on vient d'ajouter, le problème vient du fait que l'on redessine les figures qui restent par rapport à la frame et pas par rapport au Panel. Donc les formes se redessinent pas aux positions ou elles étaient avant.
 
-## Installation
+## Mise en place du projet
 ### Prérequis
 
 - Java 8
@@ -28,7 +28,7 @@ fonctionnalité.
 ## Utilisation
 - Lancer le main de la classe `App.java` dans le package `fr.uga.miage.m1`
 - Une interface graphique va s'ouvrir
-- Suivre les instructions qui s'affiche dans l'interface graphique (Jouer avec les formes)
+- Suivre les instructions qui s'affichent dans l'interface graphique (jouer avec les formes)
 
 
 ### Auteurs
