@@ -18,6 +18,11 @@ fonctionnalité.
 - Java 8
 - Maven 3.6.3
 - IDE (IntelliJ IDEA, Eclipse, VSCode, ...)
+- StarUML (visualisation des diagrammes)
+
+### Structure du projet
+- Le dossier src comprend tous les fichiers source du projet
+- Le dossier diagrams contiendra tous les diagrammes requis pour la modélisation du projet
 
 ### Installation
 
@@ -29,7 +34,6 @@ fonctionnalité.
 - Lancer le main de la classe `App.java` dans le package `fr.uga.miage.m1`
 - Une interface graphique va s'ouvrir
 - Suivre les instructions qui s'affichent dans l'interface graphique (jouer avec les formes)
-
 
 ### Auteurs
 
