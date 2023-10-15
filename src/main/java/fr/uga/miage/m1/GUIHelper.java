@@ -21,13 +21,13 @@ public class GUIHelper {
 
 
         JDrawingFrame frame = new JDrawingFrame(frameName);
+        Command command = new UndoCommand(frame);
+        Invoker invoker = new Invoker(command);
 
         frame.getRootPane().getInputMap(JComponent.WHEN_IN_FOCUSED_WINDOW).put(KeyStroke.getKeyStroke(KeyEvent.VK_Z, InputEvent.CTRL_DOWN_MASK), "undo");
         frame.getRootPane().getActionMap().put("undo", new AbstractAction() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                Command command = new UndoCommand(frame);
-                Invoker invoker = new Invoker(command);
                 invoker.execute();
             }
         });

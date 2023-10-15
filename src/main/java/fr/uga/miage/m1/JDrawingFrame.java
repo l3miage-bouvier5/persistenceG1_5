@@ -76,9 +76,9 @@ public class JDrawingFrame extends JFrame implements MouseListener, MouseMotionL
         add(mPanel, BorderLayout.CENTER);
         add(mLabel, BorderLayout.SOUTH);
         // Add shapes in the menu
-        addShape(Shapes.SQUARE, new ImageIcon("C:\\Users\\bouvi\\Leviia2\\Cours\\M1\\Patrons et composants\\Persistence_g1_5\\src\\main\\java\\fr\\uga\\miage\\m1\\images\\square.png"));
-        addShape(Shapes.TRIANGLE, new ImageIcon("C:\\Users\\bouvi\\Leviia2\\Cours\\M1\\Patrons et composants\\Persistence_g1_5\\src\\main\\java\\fr\\uga\\miage\\m1\\images\\triangle.png"));
-        addShape(Shapes.CIRCLE, new ImageIcon("C:\\Users\\bouvi\\Leviia2\\Cours\\M1\\Patrons et composants\\Persistence_g1_5\\src\\main\\java\\fr\\uga\\miage\\m1\\images\\circle.png"));
+        addShape(Shapes.SQUARE, new ImageIcon("images/square.png"));
+        addShape(Shapes.TRIANGLE, new ImageIcon("images/triangle.png"));
+        addShape(Shapes.CIRCLE, new ImageIcon("images/circle.png"));
 
         addButton("Export JSON", "json");
         setPreferredSize(new Dimension(400, 400));
@@ -159,16 +159,17 @@ public class JDrawingFrame extends JFrame implements MouseListener, MouseMotionL
         }
     }
 
-
     @Override
     public void paintComponents(Graphics g) {
         super.paintComponents(g);
-        Graphics2D g2 = (Graphics2D) this.getGraphics();
         for (SimpleShape simpleShape : shapesVisible) {
-            simpleShape.draw(g2);
+            simpleShape.draw((Graphics2D) g);
         }
     }
 
+    /**
+     * Undoes the last action
+     */
     public void undo(){
         LOGGER.info("undo");
         if(!shapesVisible.isEmpty()){
