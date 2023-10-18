@@ -68,6 +68,14 @@ public class Triangle implements SimpleShape, Visitable {
         g2.draw(polygon);
     }
 
+    /**
+     * Implements the <tt>Visitable.accept()</tt> method for the
+     * visitor design pattern.
+     * @param visitor The visitor.
+     *                {@link Visitor#visit(Circle)}
+     *            ,    {@link Visitor#visit(Square)}
+     *                {@link Visitor#visit(Triangle)}
+     * */
     @Override
     public void accept(Visitor visitor) {
         visitor.visit(this);

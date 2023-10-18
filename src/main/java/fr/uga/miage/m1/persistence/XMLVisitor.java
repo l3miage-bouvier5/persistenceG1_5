@@ -14,6 +14,7 @@ public class XMLVisitor implements Visitor {
     private static final String CLOSING_SHAPE = "</shape>";
     private static final String CLOSING_X = "</x>";
     private static final String CLOSING_Y = "</y>";
+
     private String representation = null;
 
     public XMLVisitor() {
@@ -23,45 +24,20 @@ public class XMLVisitor implements Visitor {
 
     @Override
     public void visit(Circle circle) {
-        this.representation = SHAPE +
-                "<type>circle</type>" +
-                X + circle.getX() + CLOSING_X +
-                Y + circle.getY() + CLOSING_Y +
-                CLOSING_SHAPE;
+        this.representation = SHAPE + "<type>circle</type>" + X + circle.getX() + CLOSING_X + Y + circle.getY() + CLOSING_Y + CLOSING_SHAPE;
     }
 
     @Override
     public void visit(Square square) {
-        this.representation = SHAPE +
-                "<type>square</type>" +
-                X + square.getX() + CLOSING_X +
-                Y + square.getY() + CLOSING_Y +
-                CLOSING_SHAPE;
+        this.representation = SHAPE + "<type>square</type>" + X + square.getX() + CLOSING_X + Y + square.getY() + CLOSING_Y + CLOSING_SHAPE;
     }
 
     @Override
     public void visit(Triangle triangle) {
-        this.representation = SHAPE +
-                "<type>triangle</type>" +
-                X + triangle.getX() + CLOSING_X +
-                Y + triangle.getY() + CLOSING_Y +
-                CLOSING_SHAPE;
+        this.representation = SHAPE + "<type>triangle</type>" + X + triangle.getX() + CLOSING_X + Y + triangle.getY() + CLOSING_Y + CLOSING_SHAPE;
     }
 
-    /**
-     * @return the representation in JSon example for a Triangle:
-     *
-     *         <pre>
-     * {@code
-     *  <shape>
-     *    <type>triangle</type>
-     *    <x>-25</x>
-     *    <y>-25</y>
-     *  </shape>
-     * }
-     * </pre>
-     */
     public String getRepresentation() {
-        return representation;
+        return this.representation;
     }
 }
