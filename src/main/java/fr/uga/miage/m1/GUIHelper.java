@@ -17,10 +17,8 @@ public class GUIHelper {
          * We don't need to do anything in the constructor*/
     }
 
-    public static void showOnFrame(String frameName) {
+    public static void showOnFrame(JDrawingFrame frame) {
 
-
-        JDrawingFrame frame = new JDrawingFrame(frameName);
         Command command = new UndoCommand(frame);
         Invoker invoker = new Invoker(command);
 

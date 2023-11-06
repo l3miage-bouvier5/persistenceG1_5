@@ -1,6 +1,7 @@
 package fr.uga.miage.m1.persistence;
 
 import fr.uga.miage.m1.shapes.Circle;
+import fr.uga.miage.m1.shapes.SimpleShape;
 import fr.uga.miage.m1.shapes.Square;
 import fr.uga.miage.m1.shapes.Triangle;
 

@@ -3,13 +3,26 @@ import fr.uga.miage.m1.persistence.XMLVisitor;
 import fr.uga.miage.m1.shapes.Square;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
+import org.mockito.Mock;
+import org.mockito.junit.jupiter.MockitoExtension;
+
+import java.awt.*;
+import java.awt.geom.Rectangle2D;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.Mockito.times;
+import static org.mockito.Mockito.verify;
 
+@ExtendWith(MockitoExtension.class)
 class TestSquare {
+    @Mock
+    private Graphics2D mockGraphics;
+
     @Test
     @DisplayName("Test accept circle JSON representation with max value")
-    void testAcceptCircleJSONMaxValue(){
+    void testAcceptSquareJSONMaxValue(){
         int val = Integer.MAX_VALUE;
         Square s = new Square(val, val);
         JSonVisitor jsonVisitor = new JSonVisitor();
@@ -22,7 +35,7 @@ class TestSquare {
 
     @Test
     @DisplayName("Test accept circle JSON representation with min value")
-    void testAcceptCircleJSONMinValue(){
+    void testAcceptSquareJSONMinValue(){
         int val = Integer.MIN_VALUE;
         Square s = new Square(val, val);
         JSonVisitor jsonVisitor = new JSonVisitor();
@@ -35,7 +48,7 @@ class TestSquare {
 
     @Test
     @DisplayName("Test accept circle XML representation with max value")
-    void testAcceptCircleXMLMaxValue(){
+    void testAcceptSquareXMLMaxValue(){
         int val = Integer.MAX_VALUE;
         Square s = new Square(val, val);
         XMLVisitor xmlVisitor = new XMLVisitor();
@@ -48,7 +61,7 @@ class TestSquare {
 
     @Test
     @DisplayName("Test accept circle XML representation with min value")
-    void testAcceptCircleXMLMinValue(){
+    void testAcceptSquareXMLMinValue(){
         int val = Integer.MIN_VALUE;
         Square s = new Square(val, val);
         XMLVisitor xmlVisitor = new XMLVisitor();
@@ -57,5 +70,30 @@ class TestSquare {
 
         String expected = "<shape><type>square</type><x>" + s.getX() + "</x><y>" + s.getY() + "</y></shape>";
         assertEquals(expected, res);
+    }
+
+    @Test
+    @DisplayName("Test draw square")
+    void testDraw() {
+        // Arrange
+        Square square = new Square(100, 100);
+
+        // Act
+        square.draw(mockGraphics);
+
+        // Assert
+        // Vérifiez que setRenderingHint est appelé avec les bons arguments
+        verify(mockGraphics, times(1)).setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
+
+        // Vérifiez que fill et draw de Rectangle2D.Double sont appelés avec les bons arguments
+        verify(mockGraphics, times(1)).fill(new Rectangle2D.Double(75, 75, 50, 50));
+        verify(mockGraphics, times(1)).draw(new Rectangle2D.Double(75, 75, 50, 50));
+
+        // Vérifiez que setPaint et setColor sont appelés avec les bonnes couleurs
+        verify(mockGraphics, times(1)).setPaint(any(GradientPaint.class));
+        verify(mockGraphics, times(1)).setColor(Color.BLACK);
+
+        // Vérifiez que setStroke est appelé avec le bon BasicStroke
+        verify(mockGraphics, times(1)).setStroke(any(BasicStroke.class));
     }
 }

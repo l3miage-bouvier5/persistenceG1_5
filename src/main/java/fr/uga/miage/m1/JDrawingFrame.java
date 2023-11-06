@@ -5,6 +5,7 @@ import java.io.File;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.util.*;
+import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.*;
@@ -14,6 +15,7 @@ import fr.uga.miage.m1.shapes.SimpleShape;
 import fr.uga.miage.m1.shapes.Square;
 import fr.uga.miage.m1.shapes.Triangle;
 import fr.uga.miage.m1.persistence.JSonVisitor;
+
 
 /**
  * This class represents the main application class, which is a JFrame subclass
@@ -26,11 +28,6 @@ public class JDrawingFrame extends JFrame implements MouseListener, MouseMotionL
 
 
 
-
-    private enum Shapes {
-
-        SQUARE, TRIANGLE, CIRCLE
-    }
 
     private static final long serialVersionUID = 1L;
 
@@ -86,7 +83,22 @@ public class JDrawingFrame extends JFrame implements MouseListener, MouseMotionL
     }
 
 
-    
+
+    public Shapes getMSelected(){
+        return mSelected;
+    }
+
+    public void setmSelected(Shapes shape){
+        mSelected = shape;
+    }
+
+
+    public List<SimpleShape> getShapesVisible(){
+        return shapesVisible;
+    }
+
+
+
     /**
      * Injects an available <tt>SimpleShape</tt> into the drawing frame.
      * @param name The name of the injected <tt>SimpleShape</tt>.

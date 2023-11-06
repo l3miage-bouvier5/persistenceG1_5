@@ -6,6 +6,7 @@ package fr.uga.miage.m1;
  */
 public class App {
     public static void main(String[] args) {
-        GUIHelper.showOnFrame("test");
+        JDrawingFrame frame = new JDrawingFrame("test");
+        GUIHelper.showOnFrame(frame);
     }
 }

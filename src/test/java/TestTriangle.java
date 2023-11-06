@@ -3,11 +3,23 @@ import fr.uga.miage.m1.persistence.XMLVisitor;
 import fr.uga.miage.m1.shapes.Triangle;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
+import org.mockito.Mock;
+import org.mockito.junit.jupiter.MockitoExtension;
+
+import java.awt.*;
+import java.awt.geom.GeneralPath;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.Mockito.times;
+import static org.mockito.Mockito.verify;
 
+@ExtendWith(MockitoExtension.class)
 class TestTriangle {
 
+    @Mock
+    private Graphics2D mockGraphics;
     @Test
     @DisplayName("Test accept triangle JSON representation with max value")
     void testAcceptTriangleJSONMaxValue(){
@@ -58,5 +70,30 @@ class TestTriangle {
 
         String expected = "<shape><type>triangle</type><x>" + t.getX() + "</x><y>" + t.getY() + "</y></shape>";
         assertEquals(expected, res);
+    }
+
+    @Test
+    @DisplayName("Test draw triangle")
+    void testDraw() {
+        // Arrange
+        Triangle triangle = new Triangle(100, 100);
+
+        // Act
+        triangle.draw(mockGraphics);
+
+        // Assert
+        // Vérifiez que setRenderingHint est appelé avec les bons arguments
+        verify(mockGraphics, times(1)).setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
+
+        // Vérifiez que fill et draw de GeneralPath sont appelés avec les bons arguments
+        verify(mockGraphics, times(1)).fill(any(GeneralPath.class));
+        verify(mockGraphics, times(1)).draw(any(GeneralPath.class));
+
+        // Vérifiez que setPaint et setColor sont appelés avec les bonnes couleurs
+        verify(mockGraphics, times(1)).setPaint(any(GradientPaint.class));
+        verify(mockGraphics, times(1)).setColor(Color.BLACK);
+
+        // Vérifiez que setStroke est appelé avec le bon BasicStroke
+        verify(mockGraphics, times(1)).setStroke(any(BasicStroke.class));
     }
 }
