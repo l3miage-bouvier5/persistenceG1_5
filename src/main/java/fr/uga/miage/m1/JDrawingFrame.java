@@ -22,7 +22,7 @@ import fr.uga.miage.m1.persistence.JSonVisitor;
 public class JDrawingFrame extends JFrame implements MouseListener, MouseMotionListener {
     private static final Logger LOGGER = Logger.getLogger("JDrawingFrame");
 
-
+    private List<List<SimpleShape>> history = new LinkedList<>();
     private final String output = "outputs/output";
 
     private static final long serialVersionUID = 1L;
@@ -35,7 +35,7 @@ public class JDrawingFrame extends JFrame implements MouseListener, MouseMotionL
 
     private JLabel mLabel;
 
-    private transient ArrayList<SimpleShape> shapesVisible = new ArrayList<>();
+    private transient List<SimpleShape> shapesVisible = new ArrayList<>();
 
     private transient ActionListener mReusableActionListener = new ShapeActionListener();
 
@@ -188,8 +188,12 @@ public class JDrawingFrame extends JFrame implements MouseListener, MouseMotionL
      */
     public void undo(){
         LOGGER.info("undo");
-        if(!shapesVisible.isEmpty()){
-            shapesVisible.remove(shapesVisible.size()-1);
+        if(!history.isEmpty()){
+            System.out.println("size : " + history.size());
+            int last = this.history.size() - 1;
+            System.out.println("dernier : "+ history.get(last));
+            this.shapesVisible = this.history.get(last);
+            this.history.remove(last);
             this.paintComponents(this.getGraphics());
         }
     }
@@ -202,11 +206,18 @@ public class JDrawingFrame extends JFrame implements MouseListener, MouseMotionL
     public void mouseClicked(MouseEvent evt) {
         SimpleShape s;
         if (mPanel.contains(evt.getX(), evt.getY())) {
+            addHistoryList(shapesVisible);
+            System.out.println(history);
             Graphics2D g2 = (Graphics2D) mPanel.getGraphics();
             s = ShapeFactory.getInstance().createSimpleShape(mSelected,evt.getX(), evt.getY());
             shapesVisible.add(s);
             s.draw(g2);
         }
+    }
+
+    public void addHistoryList(List<SimpleShape> shapes) {
+        List<SimpleShape> newShapes = new ArrayList<>(shapes);
+        history.add(newShapes);
     }
 
     /**
