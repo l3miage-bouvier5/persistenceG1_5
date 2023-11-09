@@ -23,7 +23,7 @@ public class JDrawingFrame extends JFrame implements MouseListener, MouseMotionL
     private static final Logger LOGGER = Logger.getLogger("JDrawingFrame");
 
 
-
+    private final String output = "outputs/output";
 
     private static final long serialVersionUID = 1L;
 
@@ -153,7 +153,7 @@ public class JDrawingFrame extends JFrame implements MouseListener, MouseMotionL
 
         bld.deleteCharAt(bld.length()-1);
         bld.append("]}");
-        try(PrintWriter writer  = new PrintWriter("output.json")) {
+        try(PrintWriter writer  = new PrintWriter(this.output+".json")) {
             writer.println(bld);
         }
     }
@@ -170,7 +170,7 @@ public class JDrawingFrame extends JFrame implements MouseListener, MouseMotionL
         }
         bld.append("</shapes>");
         bld.append("</root>");
-        try(PrintWriter writer  = new PrintWriter("output.xml")) {
+        try(PrintWriter writer  = new PrintWriter(this.output+".xml")) {
             writer.println(bld);
         }
     }
