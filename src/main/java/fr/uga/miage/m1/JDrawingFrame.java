@@ -22,8 +22,8 @@ import fr.uga.miage.m1.persistence.JSonVisitor;
 public class JDrawingFrame extends JFrame implements MouseListener, MouseMotionListener {
     private static final Logger LOGGER = Logger.getLogger("JDrawingFrame");
 
-    private List<List<SimpleShape>> history = new LinkedList<>();
-    private final String output = "outputs/output";
+    private transient List<List<SimpleShape>> history = new LinkedList<>();
+    private static final String OUTPUT = "outputs/output";
 
     private static final long serialVersionUID = 1L;
 
@@ -153,7 +153,7 @@ public class JDrawingFrame extends JFrame implements MouseListener, MouseMotionL
 
         bld.deleteCharAt(bld.length()-1);
         bld.append("]}");
-        try(PrintWriter writer  = new PrintWriter(this.output+".json")) {
+        try(PrintWriter writer  = new PrintWriter(OUTPUT+".json")) {
             writer.println(bld);
         }
     }
@@ -170,7 +170,7 @@ public class JDrawingFrame extends JFrame implements MouseListener, MouseMotionL
         }
         bld.append("</shapes>");
         bld.append("</root>");
-        try(PrintWriter writer  = new PrintWriter(this.output+".xml")) {
+        try(PrintWriter writer  = new PrintWriter(OUTPUT+".xml")) {
             writer.println(bld);
         }
     }
@@ -189,9 +189,7 @@ public class JDrawingFrame extends JFrame implements MouseListener, MouseMotionL
     public void undo(){
         LOGGER.info("undo");
         if(!history.isEmpty()){
-            System.out.println("size : " + history.size());
             int last = this.history.size() - 1;
-            System.out.println("dernier : "+ history.get(last));
             this.shapesVisible = this.history.get(last);
             this.history.remove(last);
             this.paintComponents(this.getGraphics());
@@ -207,7 +205,6 @@ public class JDrawingFrame extends JFrame implements MouseListener, MouseMotionL
         SimpleShape s;
         if (mPanel.contains(evt.getX(), evt.getY())) {
             addHistoryList(shapesVisible);
-            System.out.println(history);
             Graphics2D g2 = (Graphics2D) mPanel.getGraphics();
             s = ShapeFactory.getInstance().createSimpleShape(mSelected,evt.getX(), evt.getY());
             shapesVisible.add(s);
