@@ -20,7 +20,10 @@ import fr.uga.miage.m1.persistence.JSonVisitor;
  * @author <a href="mailto:christophe.saint-marcel@univ-grenoble-alpes.fr">Christophe</a>
  */
 public class JDrawingFrame extends JFrame implements MouseListener, MouseMotionListener {
+
     private static final Logger LOGGER = Logger.getLogger("JDrawingFrame");
+
+
 
     private transient List<List<SimpleShape>> history = new LinkedList<>();
     private static final String OUTPUT = "outputs/output";
@@ -119,10 +122,8 @@ public class JDrawingFrame extends JFrame implements MouseListener, MouseMotionL
         JButton button = new JButton(label);
         button.setBorderPainted(false);
         button.setActionCommand(label);
-
         ActionListener actionListener =
                 e -> {
-                    // Code à exécuter lorsque le bouton est cliqué
                     try {
                         if(type.equals("json"))
                             exportJSON();
@@ -131,10 +132,7 @@ public class JDrawingFrame extends JFrame implements MouseListener, MouseMotionL
                     } catch (Exception ex) {
                         LOGGER.warning(ex.getMessage());
                     }
-
                 };
-
-
         button.addActionListener(actionListener);
         mToolbar.add(button);
         mToolbar.validate();
@@ -158,6 +156,8 @@ public class JDrawingFrame extends JFrame implements MouseListener, MouseMotionL
         }
     }
 
+
+
     private void exportXML() throws IOException{
         StringBuilder bld = new StringBuilder();
         XMLVisitor visitor = new XMLVisitor();
@@ -179,7 +179,7 @@ public class JDrawingFrame extends JFrame implements MouseListener, MouseMotionL
     public void paintComponents(Graphics g) {
         super.paintComponents(g);
         for (SimpleShape simpleShape : shapesVisible) {
-            simpleShape.draw((Graphics2D) g);
+            simpleShape.draw((Graphics2D) this.mPanel.getGraphics());
         }
     }
 
@@ -195,6 +195,7 @@ public class JDrawingFrame extends JFrame implements MouseListener, MouseMotionL
             this.paintComponents(this.getGraphics());
         }
     }
+
 
     /**
      * Implements method for the <tt>MouseListener</tt> interface to
