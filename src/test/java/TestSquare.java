@@ -1,6 +1,7 @@
 import fr.uga.miage.m1.persistence.JSonVisitor;
 import fr.uga.miage.m1.persistence.XMLVisitor;
-import fr.uga.miage.m1.shapes.Square;
+import fr.uga.miage.m1.shapes.ShapeFactory;
+import fr.uga.miage.m1.shapes.SimpleShape;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -24,7 +25,7 @@ class TestSquare {
     @DisplayName("Test accept circle JSON representation with max value")
     void testAcceptSquareJSONMaxValue(){
         int val = Integer.MAX_VALUE;
-        Square s = new Square(val, val);
+        SimpleShape s = ShapeFactory.getInstance().createSimpleShape(ShapeFactory.Shapes.SQUARE,val,val);
         JSonVisitor jsonVisitor = new JSonVisitor();
         s.accept(jsonVisitor);
         String res = jsonVisitor.getRepresentation();
@@ -37,7 +38,7 @@ class TestSquare {
     @DisplayName("Test accept circle JSON representation with min value")
     void testAcceptSquareJSONMinValue(){
         int val = Integer.MIN_VALUE;
-        Square s = new Square(val, val);
+        SimpleShape s = ShapeFactory.getInstance().createSimpleShape(ShapeFactory.Shapes.SQUARE,val,val);
         JSonVisitor jsonVisitor = new JSonVisitor();
         s.accept(jsonVisitor);
         String res = jsonVisitor.getRepresentation();
@@ -50,7 +51,7 @@ class TestSquare {
     @DisplayName("Test accept circle XML representation with max value")
     void testAcceptSquareXMLMaxValue(){
         int val = Integer.MAX_VALUE;
-        Square s = new Square(val, val);
+        SimpleShape s = ShapeFactory.getInstance().createSimpleShape(ShapeFactory.Shapes.SQUARE,val,val);
         XMLVisitor xmlVisitor = new XMLVisitor();
         s.accept(xmlVisitor);
         String res = xmlVisitor.getRepresentation();
@@ -63,7 +64,7 @@ class TestSquare {
     @DisplayName("Test accept circle XML representation with min value")
     void testAcceptSquareXMLMinValue(){
         int val = Integer.MIN_VALUE;
-        Square s = new Square(val, val);
+        SimpleShape s = ShapeFactory.getInstance().createSimpleShape(ShapeFactory.Shapes.SQUARE,val,val);
         XMLVisitor xmlVisitor = new XMLVisitor();
         s.accept(xmlVisitor);
         String res = xmlVisitor.getRepresentation();
@@ -76,7 +77,7 @@ class TestSquare {
     @DisplayName("Test draw square")
     void testDraw() {
         // Arrange
-        Square square = new Square(100, 100);
+        SimpleShape square = ShapeFactory.getInstance().createSimpleShape(ShapeFactory.Shapes.SQUARE,100,100);
 
         // Act
         square.draw(mockGraphics);

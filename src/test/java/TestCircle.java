@@ -1,6 +1,7 @@
 import fr.uga.miage.m1.persistence.JSonVisitor;
 import fr.uga.miage.m1.persistence.XMLVisitor;
-import fr.uga.miage.m1.shapes.Circle;
+import fr.uga.miage.m1.shapes.ShapeFactory;
+import fr.uga.miage.m1.shapes.SimpleShape;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -25,7 +26,7 @@ class TestCircle {
     @DisplayName("Test accept circle JSON representation with max value")
     void testAcceptCircleJSONMaxValue(){
         int val = Integer.MAX_VALUE;
-        Circle c = new Circle(val, val);
+        SimpleShape c = ShapeFactory.getInstance().createSimpleShape(ShapeFactory.Shapes.CIRCLE,val,val);
         JSonVisitor jsonVisitor = new JSonVisitor();
         c.accept(jsonVisitor);
         String res = jsonVisitor.getRepresentation();
@@ -38,7 +39,7 @@ class TestCircle {
     @DisplayName("Test accept circle JSON representation with min value")
     void testAcceptCircleJSONMinValue(){
         int val = Integer.MIN_VALUE;
-        Circle c = new Circle(val, val);
+        SimpleShape c = ShapeFactory.getInstance().createSimpleShape(ShapeFactory.Shapes.CIRCLE,val,val);
         JSonVisitor jsonVisitor = new JSonVisitor();
         c.accept(jsonVisitor);
         String res = jsonVisitor.getRepresentation();
@@ -51,7 +52,7 @@ class TestCircle {
     @DisplayName("Test accept circle XML representation with max value")
     void testAcceptCircleXMLMaxValue(){
         int val = Integer.MAX_VALUE;
-        Circle c = new Circle(val, val);
+        SimpleShape c = ShapeFactory.getInstance().createSimpleShape(ShapeFactory.Shapes.CIRCLE,val,val);
         XMLVisitor xmlVisitor = new XMLVisitor();   
         c.accept(xmlVisitor);
         String res = xmlVisitor.getRepresentation();
@@ -64,7 +65,7 @@ class TestCircle {
     @DisplayName("Test accept circle XML representation with min value")
     void testAcceptCircleXMLMinValue(){
         int val = Integer.MIN_VALUE;
-        Circle c = new Circle(val, val);
+        SimpleShape c = ShapeFactory.getInstance().createSimpleShape(ShapeFactory.Shapes.CIRCLE,val,val);
         XMLVisitor xmlVisitor = new XMLVisitor();
         c.accept(xmlVisitor);
         String res = xmlVisitor.getRepresentation();
@@ -77,7 +78,7 @@ class TestCircle {
     @DisplayName("Test accept circle JSON representation with zero value")
     void testAcceptCircleJSONZeroValue(){
         int val = 0;
-        Circle c = new Circle(val, val);
+        SimpleShape c = ShapeFactory.getInstance().createSimpleShape(ShapeFactory.Shapes.CIRCLE,val,val);
         JSonVisitor jsonVisitor = new JSonVisitor();
         c.accept(jsonVisitor);
         String res = jsonVisitor.getRepresentation();
@@ -90,7 +91,7 @@ class TestCircle {
     @DisplayName("Test accept circle XML representation with zero value")
     void testAcceptCircleXMLZeroValue(){
         int val = 0;
-        Circle c = new Circle(val, val);
+        SimpleShape c = ShapeFactory.getInstance().createSimpleShape(ShapeFactory.Shapes.CIRCLE,val,val);
         XMLVisitor xmlVisitor = new XMLVisitor();
         c.accept(xmlVisitor);
         String res = xmlVisitor.getRepresentation();
@@ -103,7 +104,7 @@ class TestCircle {
     @DisplayName("Test draw circle")
     void testDraw() {
         // Arrange
-        Circle circle = new Circle(100, 100);
+        SimpleShape circle = ShapeFactory.getInstance().createSimpleShape(ShapeFactory.Shapes.CIRCLE,100,100);
 
         // Act
         circle.draw(mockGraphics);

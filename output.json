@@ -1,1 +1,13 @@
-{"shapes":]}
+{"shapes":[{
+"type": "triangle",
+"x": 26,
+"y": 33
+},{
+"type": "triangle",
+"x": 170,
+"y": 90
+},{
+"type": "triangle",
+"x": 222,
+"y": 35
+}]}

@@ -24,16 +24,15 @@ import java.awt.GradientPaint;
 import java.awt.Graphics2D;
 import java.awt.RenderingHints;
 import java.awt.geom.Ellipse2D;
-import fr.uga.miage.m1.persistence.Visitable;
 import fr.uga.miage.m1.persistence.Visitor;
 
-public class Circle implements SimpleShape, Visitable {
+class Circle implements SimpleShape {
 
     int mX;
 
     int mY;
 
-    public Circle(int x, int y) {
+    protected Circle(int x, int y) {
         mX = x - 25;
         mY = y - 25;
     }
@@ -75,5 +74,10 @@ public class Circle implements SimpleShape, Visitable {
 
     public int getY() {
         return mY;
+    }
+
+    @Override
+    public String getType() {
+        return "circle";
     }
 }

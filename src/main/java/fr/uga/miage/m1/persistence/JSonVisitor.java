@@ -1,8 +1,6 @@
 package fr.uga.miage.m1.persistence;
 
-import fr.uga.miage.m1.shapes.Circle;
-import fr.uga.miage.m1.shapes.Square;
-import fr.uga.miage.m1.shapes.Triangle;
+import fr.uga.miage.m1.shapes.SimpleShape;
 
 /**
  * @author <a href="mailto:christophe.saint-marcel@univ-grenoble-alpes.fr">Christophe</a>
@@ -20,18 +18,8 @@ public class JSonVisitor implements Visitor {
     }
 
     @Override
-    public void visit(Circle circle) {
-        this.representation = "{\n" + "\"type\": \"circle\",\n" + X + circle.getX() + ",\n" + Y + circle.getY() + "\n" + "}";
-    }
-
-    @Override
-    public void visit(Square square) {
-        this.representation = "{\n" + "\"type\": \"square\",\n" + X + square.getX() + ",\n" + Y + square.getY() + "\n" + "}";
-    }
-
-    @Override
-    public void visit(Triangle triangle) {
-        this.representation = "{\n" + "\"type\": \"triangle\",\n" + X + triangle.getX() + ",\n" + Y + triangle.getY() + "\n" + "}";
+    public void visit(SimpleShape shape) {
+        this.representation = "{\n" + "\"type\": \""+shape.getType()+"\",\n" + X + shape.getX() + ",\n" + Y + shape.getY() + "\n" + "}";
     }
 
     public String getRepresentation() {

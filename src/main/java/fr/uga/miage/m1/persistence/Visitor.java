@@ -1,8 +1,6 @@
 package fr.uga.miage.m1.persistence;
 
-import fr.uga.miage.m1.shapes.Circle;
-import fr.uga.miage.m1.shapes.Square;
-import fr.uga.miage.m1.shapes.Triangle;
+import fr.uga.miage.m1.shapes.SimpleShape;
 
 /**
  * You must define a method for each type of Visitable.
@@ -10,9 +8,6 @@ import fr.uga.miage.m1.shapes.Triangle;
  */
 public interface Visitor {
 
-    public void visit(Circle circle);
+    public void visit(SimpleShape shape);
 
-    public void visit(Square square);
-
-    public void visit(Triangle triangle);
 }

@@ -1,6 +1,11 @@
 package fr.uga.miage.m1.shapes;
 
 public class ShapeFactory {
+
+    public enum Shapes {
+
+        SQUARE, TRIANGLE, CIRCLE
+    }
     private static ShapeFactory singleton;
 
     private ShapeFactory(){}
@@ -11,15 +16,23 @@ public class ShapeFactory {
         }
         return singleton;
     }
-    public SimpleShape createTriangle(int x, int y){
-        return new Triangle(x, y);
-    }
 
-    public SimpleShape createSquare(int x, int y){
-        return new Square(x, y);
-    }
 
-    public SimpleShape createCircle(int x, int y){
-        return new Circle(x, y);
+    public SimpleShape createSimpleShape(Shapes shape, int x, int y){
+        SimpleShape s;
+        switch (shape){
+            case TRIANGLE:
+                s = new Triangle(x, y);
+                break;
+            case CIRCLE:
+                s = new Circle(x, y);
+                break;
+            case SQUARE:
+                s = new Square(x, y);
+                break;
+            default:
+                s = null;
+        }
+        return s;
     }
 }

@@ -1,5 +1,4 @@
 package fr.uga.miage.m1.shapes;
-
 /*
  * Licensed to the Apache Software Foundation (ASF) under one
  * or more contributor license agreements.  See the NOTICE file
@@ -17,14 +16,15 @@ package fr.uga.miage.m1.shapes;
  * KIND, either express or implied.  See the License for the
  * specific language governing permissions and limitations
  * under the License.
+ * .
  */
+import java.awt.Graphics2D;
 import java.awt.BasicStroke;
 import java.awt.Color;
 import java.awt.GradientPaint;
-import java.awt.Graphics2D;
 import java.awt.RenderingHints;
 import java.awt.geom.GeneralPath;
-import fr.uga.miage.m1.persistence.Visitable;
+
 import fr.uga.miage.m1.persistence.Visitor;
 
 /**
@@ -33,13 +33,13 @@ import fr.uga.miage.m1.persistence.Visitor;
  *
  * @author <a href="mailto:christophe.saint-marcel@univ-grenoble-alpes.fr">Christophe</a>
  */
-public class Triangle implements SimpleShape, Visitable {
+class Triangle implements SimpleShape {
 
     int mX;
 
     int mY;
 
-    public Triangle(int x, int y) {
+    protected Triangle(int x, int y) {
         mX = x - 25;
         mY = y - 25;
     }
@@ -72,22 +72,24 @@ public class Triangle implements SimpleShape, Visitable {
      * Implements the <tt>Visitable.accept()</tt> method for the
      * visitor design pattern.
      * @param visitor The visitor.
-     *                {@link Visitor#visit(Circle)}
-     *            ,    {@link Visitor#visit(Square)}
-     *                {@link Visitor#visit(Triangle)}
      * */
     @Override
     public void accept(Visitor visitor) {
         visitor.visit(this);
     }
 
-    @Override
+@Override
     public int getX() {
         return mX;
     }
 
-    @Override
+
     public int getY() {
         return mY;
+    }
+
+    @Override
+    public String getType(){
+        return "triangle";
     }
 }

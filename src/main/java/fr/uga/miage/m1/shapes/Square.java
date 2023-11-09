@@ -1,6 +1,6 @@
 package fr.uga.miage.m1.shapes;
 /*
- * Licensed to the Apache Software Foundation (ASF) under one
+ * licensed to the Apache Software Foundation (ASF) under one
  * or more contributor license agreements.  See the NOTICE file
  * distributed with this work for additional information
  * regarding copyright ownership.  The ASF licenses this file
@@ -17,14 +17,13 @@ package fr.uga.miage.m1.shapes;
  * specific language governing permissions and limitations
  * under the License.
  */
+import java.awt.Graphics2D;
 import java.awt.BasicStroke;
 import java.awt.Color;
 import java.awt.GradientPaint;
-import java.awt.Graphics2D;
 import java.awt.RenderingHints;
 import java.awt.geom.Rectangle2D;
 import fr.uga.miage.m1.persistence.Visitor;
-import fr.uga.miage.m1.persistence.Visitable;
 
 /**
  * This class implements the square <tt>SimpleShape</tt> extension.
@@ -32,13 +31,13 @@ import fr.uga.miage.m1.persistence.Visitable;
  *
  * @author <a href="mailto:christophe.saint-marcel@univ-grenoble-alpes.fr">Christophe</a>
  */
-public class Square implements SimpleShape, Visitable {
+class Square implements SimpleShape {
 
     int mX;
 
     int mY;
 
-    public Square(int x, int y) {
+    protected Square(int x, int y) {
         mX = x - 25;
         mY = y - 25;
     }
@@ -73,13 +72,18 @@ public class Square implements SimpleShape, Visitable {
         visitor.visit(this);
     }
 
-    @Override
+
     public int getX() {
         return mX;
     }
 
-    @Override
+@Override
     public int getY() {
         return mY;
+    }
+
+    @Override
+    public String getType(){
+        return "square";
     }
 }

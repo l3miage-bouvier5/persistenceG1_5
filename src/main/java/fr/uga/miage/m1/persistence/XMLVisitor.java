@@ -1,9 +1,6 @@
 package fr.uga.miage.m1.persistence;
 
-import fr.uga.miage.m1.shapes.Circle;
 import fr.uga.miage.m1.shapes.SimpleShape;
-import fr.uga.miage.m1.shapes.Square;
-import fr.uga.miage.m1.shapes.Triangle;
 
 /**
  * @author <a href="mailto:christophe.saint-marcel@univ-grenoble-alpes.fr">Christophe</a>
@@ -24,18 +21,8 @@ public class XMLVisitor implements Visitor {
     }
 
     @Override
-    public void visit(Circle circle) {
-        this.representation = SHAPE + "<type>circle</type>" + X + circle.getX() + CLOSING_X + Y + circle.getY() + CLOSING_Y + CLOSING_SHAPE;
-    }
-
-    @Override
-    public void visit(Square square) {
-        this.representation = SHAPE + "<type>square</type>" + X + square.getX() + CLOSING_X + Y + square.getY() + CLOSING_Y + CLOSING_SHAPE;
-    }
-
-    @Override
-    public void visit(Triangle triangle) {
-        this.representation = SHAPE + "<type>triangle</type>" + X + triangle.getX() + CLOSING_X + Y + triangle.getY() + CLOSING_Y + CLOSING_SHAPE;
+    public void visit(SimpleShape shape) {
+        this.representation = SHAPE + "<type>"+shape.getType()+"</type>" + X + shape.getX() + CLOSING_X + Y + shape.getY() + CLOSING_Y + CLOSING_SHAPE;
     }
 
     public String getRepresentation() {
