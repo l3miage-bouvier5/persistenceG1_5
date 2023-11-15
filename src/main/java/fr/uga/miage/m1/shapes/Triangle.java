@@ -18,11 +18,7 @@ package fr.uga.miage.m1.shapes;
  * under the License.
  * .
  */
-import java.awt.Graphics2D;
-import java.awt.BasicStroke;
-import java.awt.Color;
-import java.awt.GradientPaint;
-import java.awt.RenderingHints;
+import java.awt.*;
 import java.awt.geom.GeneralPath;
 
 import fr.uga.miage.m1.persistence.Visitor;
@@ -91,5 +87,19 @@ class Triangle implements SimpleShape {
     @Override
     public String getType(){
         return "triangle";
+    }
+    
+    @Override
+    public void move(int diffX, int diffY){
+        this.mX += diffX;
+        this.mY += diffY;
+    }
+    @Override
+    public boolean contains(int x, int y) {
+        int[] xcoords = { mX + 25, mX, mX + 50 };
+        int[] ycoords = { mY, mY + 50, mY + 50 };
+        Polygon triangle = new Polygon(xcoords, ycoords, xcoords.length);
+
+        return triangle.contains(x, y);
     }
 }

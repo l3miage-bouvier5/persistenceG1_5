@@ -86,4 +86,16 @@ class Square implements SimpleShape {
     public String getType(){
         return "square";
     }
+
+    @Override
+    public boolean contains(int x, int y){
+        Rectangle2D carre = new Rectangle2D.Double(mX,mY,50,50);
+        return carre.contains(x,y);
+    }
+
+    @Override
+    public void move(int diffX, int diffY){
+        this.mX += diffX;
+        this.mY += diffY;
+    }
 }

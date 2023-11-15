@@ -80,4 +80,16 @@ class Circle implements SimpleShape {
     public String getType() {
         return "circle";
     }
+
+    @Override
+    public boolean contains(int x, int y){
+        Ellipse2D cercle = new Ellipse2D.Double(mX, mY, 50, 50);
+        return cercle.contains(x, y);
+    }
+
+    @Override
+    public void move(int diffX, int diffY){
+        this.mX += diffX;
+        this.mY += diffY;
+    }
 }

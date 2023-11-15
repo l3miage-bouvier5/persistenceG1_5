@@ -35,4 +35,21 @@ public class ShapeFactory {
         }
         return s;
     }
+
+    public SimpleShape createSimpleShape(String shape, int x, int y){
+        SimpleShape s = null;
+
+            if(shape.equals("triangle")){
+                s = new Triangle(x, y);
+            }
+            if( shape.equals("circle")){
+
+                s = new Circle(x, y);
+            }
+            if(shape.equals("square")) {
+
+                s = new Square(x, y);
+            }
+        return s;
+    }
 }

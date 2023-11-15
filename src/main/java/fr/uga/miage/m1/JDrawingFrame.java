@@ -21,9 +21,12 @@ import fr.uga.miage.m1.persistence.JSonVisitor;
  */
 public class JDrawingFrame extends JFrame implements MouseListener, MouseMotionListener {
 
+    private String pathToImages = "src/main/java/fr/uga/miage/m1/images/";
     private static final Logger LOGGER = Logger.getLogger("JDrawingFrame");
 
+    private transient SimpleShape movingShape;
 
+    private Point startPosition;
 
     private transient List<List<SimpleShape>> history = new LinkedList<>();
     private static final String OUTPUT = "outputs/output";
@@ -72,29 +75,14 @@ public class JDrawingFrame extends JFrame implements MouseListener, MouseMotionL
         add(mPanel, BorderLayout.CENTER);
         add(mLabel, BorderLayout.SOUTH);
         // Add shapes in the menu
-        addShape(ShapeFactory.Shapes.SQUARE, new ImageIcon("images/square.png"));
-        addShape(ShapeFactory.Shapes.TRIANGLE, new ImageIcon("images/triangle.png"));
-        addShape(ShapeFactory.Shapes.CIRCLE, new ImageIcon("images/circle.png"));
+        addShape(ShapeFactory.Shapes.SQUARE, new ImageIcon(this.pathToImages + "square.png"));
+        addShape(ShapeFactory.Shapes.TRIANGLE, new ImageIcon(this.pathToImages + "triangle.png"));
+        addShape(ShapeFactory.Shapes.CIRCLE, new ImageIcon(this.pathToImages + "circle.png"));
 
         addButton("Export JSON", "json");
         addButton("Export XML","xml");
         setPreferredSize(new Dimension(400, 400));
         
-    }
-
-
-
-    public ShapeFactory.Shapes getMSelected(){
-        return mSelected;
-    }
-
-    public void setmSelected(ShapeFactory.Shapes shape){
-        mSelected = shape;
-    }
-
-
-    public List<SimpleShape> getShapesVisible(){
-        return shapesVisible;
     }
 
 
@@ -181,6 +169,13 @@ public class JDrawingFrame extends JFrame implements MouseListener, MouseMotionL
         for (SimpleShape simpleShape : shapesVisible) {
             simpleShape.draw((Graphics2D) this.mPanel.getGraphics());
         }
+
+
+        if(movingShape != null){
+            movingShape.draw((Graphics2D) this.mPanel.getGraphics());
+        }
+
+
     }
 
     /**
@@ -207,7 +202,7 @@ public class JDrawingFrame extends JFrame implements MouseListener, MouseMotionL
         if (mPanel.contains(evt.getX(), evt.getY())) {
             addHistoryList(shapesVisible);
             Graphics2D g2 = (Graphics2D) mPanel.getGraphics();
-            s = ShapeFactory.getInstance().createSimpleShape(mSelected,evt.getX(), evt.getY());
+            s = ShapeFactory.getInstance().createSimpleShape(mSelected, evt.getX(), evt.getY());
             shapesVisible.add(s);
             s.draw(g2);
         }
@@ -241,8 +236,18 @@ public class JDrawingFrame extends JFrame implements MouseListener, MouseMotionL
      * @param evt The associated mouse event.
      */
     public void mousePressed(MouseEvent evt) {
-        // nothing to do
-
+        for(SimpleShape shape: shapesVisible){
+            if(shape.contains(evt.getX(),evt.getY())){
+                SimpleShape shapeCopy = ShapeFactory.getInstance().createSimpleShape(shape.getType(), shape.getX() + 25, shape.getY() + 25);
+                List<SimpleShape> listCopy = new ArrayList<>(shapesVisible);
+                listCopy.remove(shape);
+                listCopy.add(shapeCopy);
+                addHistoryList(listCopy);
+                movingShape = shape;
+                startPosition = evt.getPoint();
+                break;
+            }
+        }
     }
 
     /**
@@ -251,7 +256,7 @@ public class JDrawingFrame extends JFrame implements MouseListener, MouseMotionL
      * @param evt The associated mouse event.
      */
     public void mouseReleased(MouseEvent evt) {
-        // nothing to do
+        this.movingShape = null;
     }
 
     /**
@@ -260,7 +265,13 @@ public class JDrawingFrame extends JFrame implements MouseListener, MouseMotionL
      * @param evt The associated mouse event.
      */
     public void mouseDragged(MouseEvent evt) {
-        //nothing to do
+        if(this.movingShape != null){
+            int diffX = evt.getX() - this.startPosition.x;
+            int diffY = evt.getY() - this.startPosition.y;
+            movingShape.move(diffX,diffY);
+            paintComponents(this.getGraphics());
+            startPosition = evt.getPoint();
+        }
     }
 
     /**

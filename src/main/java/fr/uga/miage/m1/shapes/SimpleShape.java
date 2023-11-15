@@ -27,4 +27,17 @@ public interface SimpleShape extends Visitable {
     void accept(Visitor visitor);
 
     public String getType();
+
+    /**
+     * Renvoie True si la forme contient les coordonnées envoyées en paramètre
+     * @param x : Coordonnée x à checker
+     * @param y : Coordonnée y à checker
+     * */
+    public boolean contains(int x, int y);
+
+    /**
+     * Permet de modifier les coordonnées X et Y de la shape
+     *
+     * */
+    public void move(int diffX, int diffY);
 }
