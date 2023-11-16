@@ -2,7 +2,6 @@ package fr.uga.miage.m1;
 
 import fr.uga.miage.m1.commands.Command;
 import fr.uga.miage.m1.commands.Invoker;
-import fr.uga.miage.m1.commands.UndoCommand;
 
 import java.awt.event.*;
 import javax.swing.*;
@@ -19,8 +18,6 @@ public class GUIHelper {
 
     public static void showOnFrame(JDrawingFrame frame) {
 
-        Command command = new UndoCommand(frame);
-        Invoker invoker = new Invoker(command);
 
         frame.getRootPane().getInputMap(JComponent.WHEN_IN_FOCUSED_WINDOW).put(KeyStroke.getKeyStroke(KeyEvent.VK_Z, InputEvent.CTRL_DOWN_MASK), "undo");
         frame.getRootPane().getActionMap().put("undo", new AbstractAction() {
