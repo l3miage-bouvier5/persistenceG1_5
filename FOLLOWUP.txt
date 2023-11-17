@@ -1,4 +1,3 @@
-bug on second undo
 - add to mousepressed detection of whats clicked
 if shape clicked -> move
 else (dans un group) -> move group
@@ -9,7 +8,7 @@ else (dans le vide) -> draw circle around shapes
     into the type group
 
 create group type
-    maybe id and list of shapes
+    list of shapes
 once group defined add shapes to it
 when mouse clicked generalise the moving in a function
 

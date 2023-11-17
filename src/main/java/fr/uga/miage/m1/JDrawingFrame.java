@@ -3,6 +3,7 @@ package fr.uga.miage.m1;
 import fr.uga.miage.m1.persistence.JSonVisitor;
 import fr.uga.miage.m1.persistence.XMLVisitor;
 import fr.uga.miage.m1.shapes.ShapeFactory;
+import fr.uga.miage.m1.shapes.ShapeGroup;
 import fr.uga.miage.m1.shapes.SimpleShape;
 
 import javax.swing.*;
@@ -47,6 +48,8 @@ public class JDrawingFrame extends JFrame{
 
     private transient List<SimpleShape> shapesVisible = new ArrayList<>();
 
+    private transient List<ShapeGroup> shapeGroups = new ArrayList<>();
+
     private transient ActionListener mReusableActionListener = new ShapeActionListener();
 
     /**
@@ -86,9 +89,10 @@ public class JDrawingFrame extends JFrame{
         addShapeIcon(ShapeFactory.Shapes.CUBE, new ImageIcon(this.pathToImages + "underc.png"));
 
 
-        addButton("Export JSON", "json");
-        addButton("Export XML","xml");
-        setPreferredSize(new Dimension(400, 400));
+        addButton("Export JSON");
+        addButton("Export XML");
+        addButton("Create Group");
+        setPreferredSize(new Dimension(800, 800));
         
     }
 
@@ -111,17 +115,25 @@ public class JDrawingFrame extends JFrame{
         repaint();
     }
 
-    private void addButton(String label, String type){
+    private void addButton(String label){
         JButton button = new JButton(label);
         button.setBorderPainted(false);
         button.setActionCommand(label);
         ActionListener actionListener =
                 e -> {
                     try {
-                        if(type.equals("json"))
+                        if(label.contains("JSON"))
                             exportJSON();
-                        else if (type.equals("xml"))
+                        else if (label.contains("XML"))
                             exportXML();
+                        else if (label.equals("Create group")) {
+                            JButton clickedButton = (JButton) e.getSource();
+                            clickedButton.setText("Save Group");
+                        }
+                        else if (label.equals("Save group")) {
+                            JButton clickedButton = (JButton) e.getSource();
+                            clickedButton.setText("Create Group");
+                        }
                     } catch (Exception ex) {
                         LOGGER.warning(ex.getMessage());
                     }
