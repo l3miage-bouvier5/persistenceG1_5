@@ -17,16 +17,30 @@ public class Invoker {
     }
 
     public void execute() {
-        Command c = this.commands.get(this.commands.size() - 1);
-        c.execute();
-        this.history.add(c);
+        if(!this.commands.isEmpty()) {
+            Command c = this.commands.get(this.commands.size() - 1);
+            c.execute();
+            if(c.finished()) {
+                this.commands.remove(c);
+                this.history.add(c);
+            }
+        }
     }
 
+
     public void undo(){
-        Command c = this.history.get(this.commands.size() - 1);
-        c.undo();
-        this.commands.add(c);
+        if(!this.history.isEmpty()){
+            Command c = this.history.get(this.history.size() - 1);
+            c.undo();
+            this.history.remove(c);
+            this.commands.add(c);
+        }
     }
+
+    public Command getCommand(){
+        return this.commands.get(this.commands.size() - 1);
+    }
+
 
 
 }

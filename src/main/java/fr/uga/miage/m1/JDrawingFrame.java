@@ -1,18 +1,21 @@
 package fr.uga.miage.m1;
+
+import fr.uga.miage.m1.persistence.JSonVisitor;
+import fr.uga.miage.m1.persistence.XMLVisitor;
+import fr.uga.miage.m1.shapes.ShapeFactory;
+import fr.uga.miage.m1.shapes.SimpleShape;
+
+import javax.swing.*;
 import java.awt.*;
-import java.awt.event.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.io.IOException;
 import java.io.PrintWriter;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.EnumMap;
 import java.util.List;
+import java.util.Map;
 import java.util.logging.Logger;
-import javax.swing.*;
-
-import fr.uga.miage.m1.commands.AddShapeCommand;
-import fr.uga.miage.m1.commands.Invoker;
-import fr.uga.miage.m1.persistence.XMLVisitor;
-import fr.uga.miage.m1.shapes.*;
-import fr.uga.miage.m1.persistence.JSonVisitor;
 
 
 /**
@@ -21,16 +24,15 @@ import fr.uga.miage.m1.persistence.JSonVisitor;
  *
  * @author <a href="mailto:christophe.saint-marcel@univ-grenoble-alpes.fr">Christophe</a>
  */
-public class JDrawingFrame extends JFrame implements MouseListener, MouseMotionListener {
+public class JDrawingFrame extends JFrame{
 
     private String pathToImages = "src/main/java/fr/uga/miage/m1/images/";
     private static final Logger LOGGER = Logger.getLogger("JDrawingFrame");
 
     private transient SimpleShape movingShape;
 
-    private Point startPosition;
+    private Point mouseLastPosition;
 
-    private transient List<List<SimpleShape>> history = new LinkedList<>();
     private static final String OUTPUT = "outputs/output";
 
     private static final long serialVersionUID = 1L;
@@ -42,8 +44,6 @@ public class JDrawingFrame extends JFrame implements MouseListener, MouseMotionL
     private JPanel mPanel;
 
     private JLabel mLabel;
-
-    private Invoker invoker = new Invoker();
 
     private transient List<SimpleShape> shapesVisible = new ArrayList<>();
 
@@ -58,7 +58,7 @@ public class JDrawingFrame extends JFrame implements MouseListener, MouseMotionL
      * Default constructor that populates the main window.
      * @param frameName
      */
-    public JDrawingFrame(String frameName) {
+    public JDrawingFrame(String frameName, Client client) {
         super(frameName);
         // Instantiates components
         mToolbar = new JToolBar("Toolbar");
@@ -66,12 +66,13 @@ public class JDrawingFrame extends JFrame implements MouseListener, MouseMotionL
         mPanel.setBackground(Color.WHITE);
         mPanel.setLayout(null);
         mPanel.setMinimumSize(new Dimension(400, 400));
-        mPanel.addMouseListener(this);
-        mPanel.addMouseMotionListener(this);
+        mPanel.addMouseListener(client);
+        mPanel.addMouseMotionListener(client);
+
+
         mPanel.setFocusable(true);
         mPanel.requestFocusInWindow();
 
-        
         mLabel = new JLabel(" ", SwingConstants.LEFT);
         // Fills the panel
         setLayout(new BorderLayout());
@@ -84,13 +85,12 @@ public class JDrawingFrame extends JFrame implements MouseListener, MouseMotionL
         addShapeIcon(ShapeFactory.Shapes.CIRCLE, new ImageIcon(this.pathToImages + "circle.png"));
         addShapeIcon(ShapeFactory.Shapes.CUBE, new ImageIcon(this.pathToImages + "underc.png"));
 
+
         addButton("Export JSON", "json");
         addButton("Export XML","xml");
-        setPreferredSize(new Dimension(800, 800));
+        setPreferredSize(new Dimension(400, 400));
         
     }
-
-
 
     /**
      * Injects an available <tt>SimpleShape</tt> into the drawing frame.
@@ -141,7 +141,6 @@ public class JDrawingFrame extends JFrame implements MouseListener, MouseMotionL
             bld.append(visitor.getRepresentation());
             bld.append(",");
                     }
-
         bld.deleteCharAt(bld.length()-1);
         bld.append("]}");
         try(PrintWriter writer  = new PrintWriter(OUTPUT+".json")) {
@@ -149,7 +148,7 @@ public class JDrawingFrame extends JFrame implements MouseListener, MouseMotionL
         }
     }
 
-
+    
     private void exportXML() throws IOException{
         StringBuilder bld = new StringBuilder();
         XMLVisitor visitor = new XMLVisitor();
@@ -193,97 +192,38 @@ public class JDrawingFrame extends JFrame implements MouseListener, MouseMotionL
     }
 
 
-    /**
-     * Implements method for the <tt>MouseListener</tt> interface to
-     * draw the selected shape into the drawing canvas.
-     * @param evt The associated mouse event.
-     */
-    public void mouseClicked(MouseEvent evt) {
-        SimpleShape shape;
-        if (mPanel.contains(evt.getX(), evt.getY())) {
-            shape = ShapeFactory.getInstance().createSimpleShape(mSelected, evt.getX(), evt.getY());
-            this.invoker.addCommand(new AddShapeCommand(this, shape));
-            this.invoker.execute();
-        }
+
+    public JPanel getmPanel() {
+        return mPanel;
     }
 
-    public void addHistoryList(List<SimpleShape> shapes) {
-        List<SimpleShape> newShapes = new ArrayList<>(shapes);
-        history.add(newShapes);
+    public ShapeFactory.Shapes getmSelected() {
+        return mSelected;
     }
 
-    /**
-     * Implements an empty method for the <tt>MouseListener</tt> interface.
-     * @param evt The associated mouse event.
-     */
-    public void mouseEntered(MouseEvent evt) {
-        // Nothing to do
+    public JLabel getmLabel() {
+        return mLabel;
+    }
+    
+
+    public List<SimpleShape> getShapesVisible() {
+        return shapesVisible;
     }
 
-    /**
-     * Implements an empty method for the <tt>MouseListener</tt> interface.
-     * @param evt The associated mouse event.
-     */
-    public void mouseExited(MouseEvent evt) {
-        mLabel.setText(" ");
-        mLabel.repaint();
+    public void setMouseLastPosition(Point mouseLastPosition) {
+        this.mouseLastPosition = mouseLastPosition;
     }
 
-    /**
-     * Implements method for the <tt>MouseListener</tt> interface to initiate
-     * shape dragging.
-     * @param evt The associated mouse event.
-     */
-    public void mousePressed(MouseEvent evt) {
-        for(SimpleShape shape: shapesVisible){
-            if(shape.contains(evt.getX(),evt.getY())){
-                SimpleShape shapeCopy = ShapeFactory.getInstance().createSimpleShape(shape.getType(), shape.getX() + 25, shape.getY() + 25);
-                List<SimpleShape> listCopy = new ArrayList<>(shapesVisible);
-                listCopy.remove(shape);
-                listCopy.add(shapeCopy);
-                addHistoryList(listCopy);
-                movingShape = shape;
-                startPosition = evt.getPoint();
-                break;
-            }
-        }
+    public Point getMouseLastPosition() {
+        return mouseLastPosition;
     }
 
-    /**
-     * Implements method for the <tt>MouseListener</tt> interface to complete
-     * shape dragging.
-     * @param evt The associated mouse event.
-     */
-    public void mouseReleased(MouseEvent evt) {
-        this.movingShape = null;
+    public SimpleShape getMovingShape() {
+        return movingShape;
     }
 
-    /**
-     * Implements method for the <tt>MouseMotionListener</tt> interface to
-     * move a dragged shape.
-     * @param evt The associated mouse event.
-     */
-    public void mouseDragged(MouseEvent evt) {
-        if(this.movingShape != null){
-            int diffX = evt.getX() - this.startPosition.x;
-            int diffY = evt.getY() - this.startPosition.y;
-            movingShape.move(diffX,diffY);
-            paintComponents(this.getGraphics());
-            startPosition = evt.getPoint();
-        }
-    }
-
-    /**
-     * Implements an empty method for the <tt>MouseMotionListener</tt>
-     * interface.
-     * @param evt The associated mouse event.
-     */
-    public void mouseMoved(MouseEvent evt) {
-        modifyLabel(evt);
-    }
-
-    private void modifyLabel(MouseEvent evt) {
-        mLabel.setText("(" + evt.getX() + "," + evt.getY() + ")");
+    public void setMovingShape(SimpleShape movingShape) {
+        this.movingShape = movingShape;
     }
 
     /**

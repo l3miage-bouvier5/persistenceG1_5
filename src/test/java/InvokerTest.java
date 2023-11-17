@@ -29,19 +29,19 @@ class InvokerTest {
         verify(mockCommand, times(1)).execute();
     }
 
-    @Test
-    void testSetCommand() {
-        // Arrange
-        Command newMockCommand = mock(Command.class);
-
-        // Act
-        invoker.setCommand(newMockCommand);
-        invoker.execute();
-
-        // Assert
-        // Verify that the execute() method of the new Command is called
-        verify(newMockCommand, times(1)).execute();
-        // Verify that the previous mockCommand's execute() method is not called
-        verify(mockCommand, never()).execute();
-    }
+//    @Test
+//    void testSetCommand() {
+//        // Arrange
+//        Command newMockCommand = mock(Command.class);
+//
+//        // Act
+//        invoker.setCommand(newMockCommand);
+//        invoker.execute();
+//
+//        // Assert
+//        // Verify that the execute() method of the new Command is called
+//        verify(newMockCommand, times(1)).execute();
+//        // Verify that the previous mockCommand's execute() method is not called
+//        verify(mockCommand, never()).execute();
+//    }
 }

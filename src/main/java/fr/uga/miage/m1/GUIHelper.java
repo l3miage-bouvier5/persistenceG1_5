@@ -16,26 +16,15 @@ public class GUIHelper {
          * We don't need to do anything in the constructor*/
     }
 
-    public static void showOnFrame(JDrawingFrame frame) {
-
-
-        frame.getRootPane().getInputMap(JComponent.WHEN_IN_FOCUSED_WINDOW).put(KeyStroke.getKeyStroke(KeyEvent.VK_Z, InputEvent.CTRL_DOWN_MASK), "undo");
-        frame.getRootPane().getActionMap().put("undo", new AbstractAction() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                invoker.execute();
-            }
-        });
-
-
+    public static void showOnFrame(Client client) {
         WindowAdapter wa = new WindowAdapter() {
             @Override
             public void windowClosing(WindowEvent e) {
                 System.exit(0);
             }
         };
-        frame.addWindowListener(wa);
-        frame.pack();
-        frame.setVisible(true);
+        client.getFrame().addWindowListener(wa);
+        client.getFrame().pack();
+        client.getFrame().setVisible(true);
     }
 }

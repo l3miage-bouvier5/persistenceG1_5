@@ -102,4 +102,10 @@ class Triangle implements SimpleShape {
 
         return triangle.contains(x, y);
     }
+
+    @Override
+    public void goTo(int x, int y) {
+        this.mX = x;
+        this.mY = y;
+    }
 }

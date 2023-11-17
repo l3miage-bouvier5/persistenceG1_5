@@ -9,9 +9,12 @@ public class AddShapeCommand implements Command{
 
     private SimpleShape shape;
 
+    private boolean finished;
+
     public AddShapeCommand(JDrawingFrame frame, SimpleShape shape){
         this.frame = frame;
         this.shape = shape;
+        this.finished = true;
     }
     
 
@@ -23,5 +26,14 @@ public class AddShapeCommand implements Command{
     @Override
     public void undo() {
         this.frame.removeShape(this.shape);
+    }
+
+    @Override
+    public boolean finished() {
+        return finished;
+    }
+
+    public void setFinished(boolean finished) {
+        this.finished = finished;
     }
 }

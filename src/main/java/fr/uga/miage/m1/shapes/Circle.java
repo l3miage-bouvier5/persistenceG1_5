@@ -92,4 +92,10 @@ class Circle implements SimpleShape {
         this.mX += diffX;
         this.mY += diffY;
     }
+
+    @Override
+    public void goTo(int x, int y) {
+        this.mX = x;
+        this.mY = y;
+    }
 }

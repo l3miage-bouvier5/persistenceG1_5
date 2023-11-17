@@ -21,7 +21,7 @@ public class Cube implements SimpleShape{
     public void draw(Graphics2D g2) {
 
 
-        CubePanel c = new CubePanel(0, mX, mY);
+        CubePanel c = new CubePanel(50, mX, mY);
 
         c.paintComponent(g2);
     }
@@ -56,5 +56,10 @@ public class Cube implements SimpleShape{
     public void move(int diffX, int diffY) {
         this.mX += diffX;
         this.mY += diffY;
+    }
+
+    @Override
+    public void goTo(int x, int y) {
+
     }
 }
