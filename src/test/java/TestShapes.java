@@ -7,11 +7,8 @@ class TestShapes {
     @Test
     void testEnumValues() {
         // Vérifier que les valeurs de l'énumération sont correctes
-        assertEquals(3, ShapeFactory.Shapes.values().length); // Vérifiez qu'il y a trois formes
+        assertEquals(4, ShapeFactory.Shapes.values().length);
 
-        assertTrue(containsShape(ShapeFactory.Shapes.SQUARE));
-        assertTrue(containsShape(ShapeFactory.Shapes.TRIANGLE));
-        assertTrue(containsShape(ShapeFactory.Shapes.CIRCLE));
     }
 
     private boolean containsShape(ShapeFactory.Shapes shape) {

@@ -78,10 +78,11 @@ public class JDrawingFrame extends JFrame implements MouseListener, MouseMotionL
         addShape(ShapeFactory.Shapes.SQUARE, new ImageIcon(this.pathToImages + "square.png"));
         addShape(ShapeFactory.Shapes.TRIANGLE, new ImageIcon(this.pathToImages + "triangle.png"));
         addShape(ShapeFactory.Shapes.CIRCLE, new ImageIcon(this.pathToImages + "circle.png"));
+        addShape(ShapeFactory.Shapes.CUBE, new ImageIcon(this.pathToImages + "underc.png"));
 
         addButton("Export JSON", "json");
         addButton("Export XML","xml");
-        setPreferredSize(new Dimension(400, 400));
+        setPreferredSize(new Dimension(800, 800));
         
     }
 
