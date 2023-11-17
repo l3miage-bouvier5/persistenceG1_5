@@ -54,7 +54,9 @@ public class Client implements MouseListener, MouseMotionListener {
      */
     @Override
     public void mousePressed(MouseEvent evt) {
-        for(SimpleShape shape: frame.getShapesVisible()){
+        List<SimpleShape> shapes = frame.getShapesVisible();
+        for(int i = shapes.size()-1; i >= 0; i--){
+            SimpleShape shape = shapes.get(i);
             if(shape.contains(evt.getX(),evt.getY())){
                 frame.setMouseLastPosition(evt.getPoint());
                 frame.setMovingShape(shape);

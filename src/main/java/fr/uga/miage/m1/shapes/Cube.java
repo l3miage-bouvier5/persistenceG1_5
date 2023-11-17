@@ -10,6 +10,8 @@ public class Cube implements SimpleShape{
     private int mX;
     private int mY;
 
+    private int size = 50;
+
     public Cube(int mX,int mY){
         this.mX = mX;
         this.mY = mY;
@@ -20,7 +22,7 @@ public class Cube implements SimpleShape{
     public void draw(Graphics2D g2) {
 
 
-        CubePanel c = new CubePanel(50, mX, mY);
+        CubePanel c = new CubePanel(size, mX, mY);
 
         c.paintComponent(g2);
     }
@@ -48,7 +50,12 @@ public class Cube implements SimpleShape{
 
     @Override
     public boolean contains(int x, int y) {
-        return false;
+        int minX = this.mX - this.size/2;
+        int minY = this.mY - this.size/2;
+        int maxX = this.mX + this.size/2;
+        int maxY = this.mY + this.size/2;
+
+        return (x >= minX && x <= maxX && y >= minY && y <= maxY);
     }
 
 
