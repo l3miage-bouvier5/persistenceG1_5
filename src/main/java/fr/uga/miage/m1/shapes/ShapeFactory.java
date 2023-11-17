@@ -4,7 +4,7 @@ public class ShapeFactory {
 
     public enum Shapes {
 
-        SQUARE, TRIANGLE, CIRCLE
+        SQUARE, TRIANGLE, CIRCLE, CUBE
     }
     private static ShapeFactory singleton;
 
@@ -30,6 +30,9 @@ public class ShapeFactory {
             case SQUARE:
                 s = new Square(x, y);
                 break;
+                case CUBE:
+                s = new Cube(x, y);
+                    break;
             default:
                 s = null;
         }
@@ -49,6 +52,10 @@ public class ShapeFactory {
             if(shape.equals("square")) {
 
                 s = new Square(x, y);
+            }
+            if(shape.equals("cube")) {
+
+                s = new Cube(x, y);
             }
         return s;
     }

@@ -71,6 +71,7 @@ public class JDrawingFrame extends JFrame implements MouseListener, MouseMotionL
         mPanel.setFocusable(true);
         mPanel.requestFocusInWindow();
 
+        
         mLabel = new JLabel(" ", SwingConstants.LEFT);
         // Fills the panel
         setLayout(new BorderLayout());
@@ -81,12 +82,15 @@ public class JDrawingFrame extends JFrame implements MouseListener, MouseMotionL
         addShapeIcon(ShapeFactory.Shapes.SQUARE, new ImageIcon(this.pathToImages + "square.png"));
         addShapeIcon(ShapeFactory.Shapes.TRIANGLE, new ImageIcon(this.pathToImages + "triangle.png"));
         addShapeIcon(ShapeFactory.Shapes.CIRCLE, new ImageIcon(this.pathToImages + "circle.png"));
+        addShapeIcon(ShapeFactory.Shapes.CUBE, new ImageIcon(this.pathToImages + "underc.png"));
 
         addButton("Export JSON", "json");
         addButton("Export XML","xml");
-        setPreferredSize(new Dimension(400, 400));
+        setPreferredSize(new Dimension(800, 800));
         
     }
+
+
 
     /**
      * Injects an available <tt>SimpleShape</tt> into the drawing frame.
@@ -145,7 +149,7 @@ public class JDrawingFrame extends JFrame implements MouseListener, MouseMotionL
         }
     }
 
-    
+
     private void exportXML() throws IOException{
         StringBuilder bld = new StringBuilder();
         XMLVisitor visitor = new XMLVisitor();
@@ -202,8 +206,6 @@ public class JDrawingFrame extends JFrame implements MouseListener, MouseMotionL
             this.invoker.execute();
         }
     }
-
-
 
     public void addHistoryList(List<SimpleShape> shapes) {
         List<SimpleShape> newShapes = new ArrayList<>(shapes);
@@ -283,7 +285,6 @@ public class JDrawingFrame extends JFrame implements MouseListener, MouseMotionL
     private void modifyLabel(MouseEvent evt) {
         mLabel.setText("(" + evt.getX() + "," + evt.getY() + ")");
     }
-    
 
     /**
      * Simple action listener for shape tool bar buttons that sets

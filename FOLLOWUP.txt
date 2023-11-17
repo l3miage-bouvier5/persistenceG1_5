@@ -1,0 +1,50 @@
+bug on second undo
+- add to mousepressed detection of whats clicked
+if shape clicked -> move
+else (dans un group) -> move group
+else (dans le vide) -> draw circle around shapes
+    add coordinates inside list until duplication
+    and trace during drawing
+    find a way to filter visible shapes to register the ones inside the area determined
+    into the type group
+
+create group type
+    maybe id and list of shapes
+once group defined add shapes to it
+when mouse clicked generalise the moving in a function
+
+mousepressed
+add these lines
+        for(group in visible definedGroups){
+            if(group.contains(evt.getX(),evt.getY())){ // TO IMPLEMENT
+                -
+                SimpleShape shapeCopy = ShapeFactory.getInstance().createSimpleShape(shape.getType(), shape.getX() + 25, shape.getY() + 25);
+                List<SimpleShape> listCopy = new ArrayList<>(shapesVisible);
+                listCopy.remove(shape);
+                listCopy.add(shapeCopy);
+                -
+                ^^^^^^^ for each shape inside group
+                addHistoryList(listCopy);
+                movingGroup = group;
+                startPosition = evt.getPoint();
+                break;
+            }
+        }
+mousereleased is the same almost?
+
+mousedragged
+add these lines
+        if(this.movingGroup != null){
+            int diffX = evt.getX() - this.startPosition.x;
+            int diffY = evt.getY() - this.startPosition.y;
+            for each shape in the group
+                 movingShape.move(diffX,diffY);
+            paintComponents(this.getGraphics());
+            startPosition = evt.getPoint();
+        }
+
+envisager version stupide with button create group and save group
+
+feedback prof
+Diagramme de classes
+No more staruml
