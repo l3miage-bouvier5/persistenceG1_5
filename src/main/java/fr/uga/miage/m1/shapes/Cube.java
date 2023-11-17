@@ -4,7 +4,6 @@ import edu.uga.singleshape.CubePanel;
 import fr.uga.miage.m1.persistence.Visitor;
 
 import java.awt.*;
-import java.awt.geom.Rectangle2D;
 
 public class Cube implements SimpleShape{
 
@@ -60,6 +59,7 @@ public class Cube implements SimpleShape{
 
     @Override
     public void goTo(int x, int y) {
-
+        this.mX = x;
+        this.mY = y;
     }
 }

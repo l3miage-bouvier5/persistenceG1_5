@@ -8,9 +8,6 @@ public class Invoker {
 
     private final List<Command> history = new ArrayList<>();
 
-    public Invoker() {
-
-    }
 
     public void addCommand(Command command) {
         this.commands.add(command);

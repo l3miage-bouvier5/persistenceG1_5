@@ -1,10 +1,7 @@
 package fr.uga.miage.m1;
 
-import fr.uga.miage.m1.commands.Command;
-import fr.uga.miage.m1.commands.Invoker;
-
-import java.awt.event.*;
-import javax.swing.*;
+import java.awt.event.WindowAdapter;
+import java.awt.event.WindowEvent;
 
 /**
  *  @author <a href="mailto:christophe.saint-marcel@univ-grenoble-alpes.fr">Christophe</a>

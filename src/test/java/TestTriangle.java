@@ -96,4 +96,36 @@ class TestTriangle {
         // Vérifiez que setStroke est appelé avec le bon BasicStroke
         verify(mockGraphics, times(1)).setStroke(any(BasicStroke.class));
     }
+
+    @Test
+    @DisplayName("Test move triangle")
+    void testMove(){
+        int baseX = 50;
+        int baseY = 50;
+
+        int moveX = 100;
+        int moveY = 100;
+        SimpleShape triangle = ShapeFactory.getInstance().createSimpleShape(ShapeFactory.Shapes.TRIANGLE,baseX,baseY);
+
+        triangle.move(moveX,moveY);
+
+        assertEquals(triangle.getX(),baseX - 25 + moveX);
+        assertEquals(triangle.getY(),baseY - 25 + moveY );
+    }
+
+    @Test
+    @DisplayName("Test goTo with maxValue")
+    void testGoTo(){
+        int baseX = 50;
+        int baseY = 50;
+        int moveX = 100;
+        int moveY = 100;
+        SimpleShape triangle = ShapeFactory.getInstance().createSimpleShape(ShapeFactory.Shapes.TRIANGLE,baseX,baseY);
+
+
+        triangle.goTo(moveX,moveY);
+
+        assertEquals(triangle.getY(), moveY);
+        assertEquals(triangle.getX(), moveX);
+    }
 }

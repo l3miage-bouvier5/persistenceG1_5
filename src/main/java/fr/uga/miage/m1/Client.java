@@ -88,7 +88,7 @@ public class Client implements MouseListener, MouseMotionListener {
      */
     @Override
     public void mouseEntered(MouseEvent evt) {
-
+        // des trucs à faire la (rien)
     }
 
     /**
