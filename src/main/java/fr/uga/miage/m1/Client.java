@@ -10,6 +10,7 @@ import fr.uga.miage.m1.shapes.SimpleShape;
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.*;
+import java.util.List;
 
 public class Client implements MouseListener, MouseMotionListener {
 
