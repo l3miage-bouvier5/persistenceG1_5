@@ -46,7 +46,5 @@ add these lines
 envisager version stupide with button create group and save group
 
 feedback prof
-Dossier output
 Diagramme de classes
 No more staruml
-No more doc de conception put all on git

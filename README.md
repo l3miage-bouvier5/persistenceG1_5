@@ -9,10 +9,11 @@ fonctionnalité.
 
 ## Avancée
 
-Chaque itération est documentée au niveau du dossier [documentation](./documentation) à la racine du projet.
+Dorénavent, chaque itération est documentée au niveau du dossier [documentation](./documentation) à la racine du projet.
 
-- [Itération 1](./documentation/iteration_1.md) : L'ajout de la fonctionnalité 'export JSON' qui fonctionne correctement.
+- Itération 1 : L'ajout de la fonctionnalité 'export JSON' qui fonctionne correctement.
 - [Itération 2](./documentation/iteration_2.md): L'ajout d'une deuxième fonctionnalité 'CTRL Z' qui pour  le moment ne fonctionne pas correctement. Bien que nous arrivons à supprimer le shape qu'on vient d'ajouter, le problème vient du fait que l'on redessine les figures qui restent par rapport à la frame et pas par rapport au Panel. Donc les formes se redessinent pas aux positions ou elles étaient avant.
+
 
 ## Mise en place du projet
 ### Prérequis
