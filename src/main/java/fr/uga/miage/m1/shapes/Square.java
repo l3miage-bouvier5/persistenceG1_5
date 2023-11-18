@@ -37,6 +37,8 @@ class Square implements SimpleShape {
 
     int mY;
 
+    private boolean isSelected = false;
+
     protected Square(int x, int y) {
         mX = x - 25;
         mY = y - 25;
@@ -56,8 +58,21 @@ class Square implements SimpleShape {
         g2.setColor(Color.black);
         g2.setStroke(wideStroke);
         g2.draw(new Rectangle2D.Double(mX, mY, 50, 50));
-    }
+        if (isSelected) {
+            int borderSize = 1;
+            g2.setColor(Color.GREEN);
+            g2.setStroke(new BasicStroke(borderSize));
 
+
+            int minX = this.mX;
+            int minY = this.mY;
+            int width = 50 + borderSize;
+            int height = 50 + borderSize;
+
+
+            g2.draw(new Rectangle2D.Double(minX, minY, width, height));
+        }
+    }
 
     /**
      * Implements the <tt>Visitable.accept()</tt> method for the
@@ -72,7 +87,14 @@ class Square implements SimpleShape {
         visitor.visit(this);
     }
 
-
+    @Override
+    public void goTo(int x, int y) {
+        this.mX = x;
+        this.mY = y;
+    }
+    public boolean isSelected() {
+        return isSelected;
+    }
     public int getX() {
         return mX;
     }
@@ -100,9 +122,13 @@ class Square implements SimpleShape {
     }
 
 
+
+
     @Override
-    public void goTo(int x, int y) {
-        this.mX = x;
-        this.mY = y;
+    public void setSelected(boolean selected) {
+        this.isSelected = selected;
     }
+
+
+
 }

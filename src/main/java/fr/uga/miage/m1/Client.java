@@ -42,6 +42,15 @@ public class Client implements MouseListener, MouseMotionListener {
     public void mouseClicked(MouseEvent evt) {
         SimpleShape shape;
         if (this.frame.getmPanel().contains(evt.getX(), evt.getY())) {
+            List<SimpleShape> shapes = frame.getShapesVisible();
+            for (int i = shapes.size() - 1; i >= 0; i--) {
+                shape = shapes.get(i);
+                if (shape.contains(evt.getX(), evt.getY())) {
+                    shape.setSelected(!shape.isSelected());
+                    frame.paintComponents(frame.getGraphics());
+                    return;
+                }
+            }
             shape = ShapeFactory.getInstance().createSimpleShape(frame.getmSelected(), evt.getX(), evt.getY());
             this.invoker.addCommand(new AddShapeCommand(frame, shape));
             this.invoker.execute();

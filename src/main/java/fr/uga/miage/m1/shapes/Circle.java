@@ -32,6 +32,8 @@ class Circle implements SimpleShape {
 
     int mY;
 
+    private boolean isSelected = false;
+
     protected Circle(int x, int y) {
         mX = x - 25;
         mY = y - 25;
@@ -51,6 +53,19 @@ class Circle implements SimpleShape {
         g2.setColor(Color.black);
         g2.setStroke(wideStroke);
         g2.draw(new Ellipse2D.Double(mX, mY, 50, 50));
+        if (isSelected) {
+            int borderSize = 1;
+            g2.setColor(Color.GREEN);
+            g2.setStroke(new BasicStroke(borderSize));
+
+
+            int minX = this.mX;
+            int minY = this.mY;
+            int width = 50 + borderSize;
+            int height = 50 + borderSize;
+
+            g2.draw(new Ellipse2D.Double(minX, minY, width, height));
+        }
     }
 
 
@@ -87,7 +102,7 @@ class Circle implements SimpleShape {
         return cercle.contains(x, y);
     }
 
-    @Override
+
     public void move(int diffX, int diffY){
         this.mX += diffX;
         this.mY += diffY;
@@ -97,5 +112,15 @@ class Circle implements SimpleShape {
     public void goTo(int x, int y) {
         this.mX = x;
         this.mY = y;
+    }
+
+    @Override
+    public void setSelected(boolean selected) {
+        this.isSelected = selected;
+    }
+
+    @Override
+    public boolean isSelected() {
+        return isSelected;
     }
 }

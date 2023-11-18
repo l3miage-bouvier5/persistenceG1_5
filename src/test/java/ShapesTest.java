@@ -1,8 +1,7 @@
 import fr.uga.miage.m1.shapes.ShapeFactory;
 import org.junit.jupiter.api.Test;
 import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertTrue;
-class TestShapes {
+class ShapesTest {
 
     @Test
     void testEnumValues() {

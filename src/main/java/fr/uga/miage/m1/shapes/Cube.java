@@ -5,10 +5,12 @@ import fr.uga.miage.m1.persistence.Visitor;
 
 import java.awt.*;
 
-public class Cube implements SimpleShape{
+class Cube implements SimpleShape{
 
     private int mX;
     private int mY;
+
+    private boolean isSelected = false;
 
     private int size = 50;
 
@@ -25,6 +27,20 @@ public class Cube implements SimpleShape{
         CubePanel c = new CubePanel(size, mX, mY);
 
         c.paintComponent(g2);
+        if (isSelected) {
+            int borderSize = 1;
+            g2.setColor(Color.GREEN);
+            g2.setStroke(new BasicStroke(borderSize));
+
+
+            int minX = this.mX - this.size / 2;
+            int minY = this.mY - this.size / 2;
+            int width = this.size + borderSize;
+            int height = this.size + borderSize;
+
+
+            g2.drawRect(minX, minY, width, height);
+        }
     }
 
     @Override
@@ -68,5 +84,15 @@ public class Cube implements SimpleShape{
     public void goTo(int x, int y) {
         this.mX = x;
         this.mY = y;
+    }
+
+
+    public void setSelected(boolean selected) {
+        this.isSelected = selected;
+    }
+
+    @Override
+    public boolean isSelected() {
+        return isSelected;
     }
 }

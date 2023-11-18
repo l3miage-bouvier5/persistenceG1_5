@@ -36,9 +36,11 @@
             <artifactId>edu.uga.singleshape</artifactId>
             <version>1.0.1</version>
         </dependency>
+
     </dependencies>
     <build>
         <plugins>
+
             <plugin>
                 <artifactId>maven-compiler-plugin</artifactId>
                 <version>3.8.1</version>

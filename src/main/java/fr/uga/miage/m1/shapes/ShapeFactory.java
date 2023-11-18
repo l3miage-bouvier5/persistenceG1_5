@@ -33,6 +33,7 @@ public class ShapeFactory {
                 case CUBE:
                 s = new Cube(x, y);
                     break;
+
             default:
                 s = null;
         }
@@ -57,6 +58,7 @@ public class ShapeFactory {
 
                 s = new Cube(x, y);
             }
+
         return s;
     }
 }

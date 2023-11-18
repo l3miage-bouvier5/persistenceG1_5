@@ -42,4 +42,8 @@ public interface SimpleShape extends Visitable {
     public void move(int diffX, int diffY);
 
     public void goTo(int x, int y);
+
+    public void setSelected(boolean selected);
+
+    public boolean isSelected();
 }

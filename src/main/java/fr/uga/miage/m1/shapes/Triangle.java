@@ -19,7 +19,6 @@ package fr.uga.miage.m1.shapes;
  * .
  */
 import java.awt.*;
-import java.awt.geom.GeneralPath;
 
 import fr.uga.miage.m1.persistence.Visitor;
 
@@ -34,6 +33,8 @@ class Triangle implements SimpleShape {
     int mX;
 
     int mY;
+
+    private boolean isSelected = false;
 
     protected Triangle(int x, int y) {
         mX = x - 25;
@@ -51,17 +52,19 @@ class Triangle implements SimpleShape {
         g2.setPaint(gradient);
         int[] xcoords = { mX + 25, mX, mX + 50 };
         int[] ycoords = {mY, mY + 50, mY + 50 };
-        GeneralPath polygon = new GeneralPath(java.awt.geom.Path2D.WIND_EVEN_ODD, xcoords.length);
-        polygon.moveTo(mX + 25f, mY);
-        for (int i = 0; i < xcoords.length; i++) {
-            polygon.lineTo(xcoords[i], ycoords[i]);
-        }
-        polygon.closePath();
+        Polygon polygon = new Polygon(xcoords, ycoords, xcoords.length);
         g2.fill(polygon);
         BasicStroke wideStroke = new BasicStroke(2.0f);
-        g2.setColor(Color.black);
+        g2.setColor(Color.BLACK);
         g2.setStroke(wideStroke);
         g2.draw(polygon);
+        if (isSelected) {
+            int borderSize = 1;
+            g2.setColor(Color.GREEN);
+            g2.setStroke(new BasicStroke(borderSize));
+            g2.drawPolygon(polygon);
+        }
+
     }
 
     /**
@@ -74,11 +77,15 @@ class Triangle implements SimpleShape {
         visitor.visit(this);
     }
 
-@Override
+    @Override
     public int getX() {
         return mX;
     }
 
+    @Override
+    public void setSelected(boolean selected) {
+        this.isSelected = selected;
+    }
 
     public int getY() {
         return mY;
@@ -107,5 +114,11 @@ class Triangle implements SimpleShape {
     public void goTo(int x, int y) {
         this.mX = x;
         this.mY = y;
+    }
+
+
+    @Override
+    public boolean isSelected() {
+        return isSelected;
     }
 }

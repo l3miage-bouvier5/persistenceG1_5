@@ -91,7 +91,7 @@ public class JDrawingFrame extends JFrame{
 
         addButton("Export JSON");
         addButton("Export XML");
-        addButton("Create Group");
+        addButton("Group");
         setPreferredSize(new Dimension(800, 800));
         
     }
@@ -126,13 +126,8 @@ public class JDrawingFrame extends JFrame{
                             exportJSON();
                         else if (label.contains("XML"))
                             exportXML();
-                        else if (label.equals("Create group")) {
-                            JButton clickedButton = (JButton) e.getSource();
-                            clickedButton.setText("Save Group");
-                        }
-                        else if (label.equals("Save group")) {
-                            JButton clickedButton = (JButton) e.getSource();
-                            clickedButton.setText("Create Group");
+                        else if (label.equals("Group")){
+                            groupSelectedShapes();
                         }
                     } catch (Exception ex) {
                         LOGGER.warning(ex.getMessage());
@@ -144,15 +139,27 @@ public class JDrawingFrame extends JFrame{
         repaint();
     }
 
+
     private void exportJSON() throws IOException{
         StringBuilder bld = new StringBuilder();
         JSonVisitor visitor = new JSonVisitor();
         bld.append("{\"shapes\":[");
         for (SimpleShape simpleShape : shapesVisible) {
+            if(simpleShape.getType().equals("group")){
+                bld.append("{\"group\":[");
+                for (SimpleShape shape : ((ShapeGroup) simpleShape).getShapes()) {
+                    shape.accept(visitor);
+                    bld.append(visitor.getRepresentation());
+                    bld.append(",");
+                }
+                bld.deleteCharAt(bld.length()-1);
+                bld.append("]},");
+            }else{
             simpleShape.accept(visitor);
             bld.append(visitor.getRepresentation());
             bld.append(",");
-                    }
+            }
+        }
         bld.deleteCharAt(bld.length()-1);
         bld.append("]}");
         try(PrintWriter writer  = new PrintWriter(OUTPUT+".json")) {
@@ -160,7 +167,7 @@ public class JDrawingFrame extends JFrame{
         }
     }
 
-    
+
     private void exportXML() throws IOException{
         StringBuilder bld = new StringBuilder();
         XMLVisitor visitor = new XMLVisitor();
@@ -168,8 +175,18 @@ public class JDrawingFrame extends JFrame{
         bld.append("<root>");
         bld.append("<shapes>");
         for (SimpleShape simpleShape : shapesVisible) {
-            simpleShape.accept(visitor);
-            bld.append(visitor.getRepresentation());
+            if(simpleShape.getType().equals("group")){
+                bld.append("<group>");
+                for (SimpleShape shape : ((ShapeGroup) simpleShape).getShapes()) {
+                    shape.accept(visitor);
+                    bld.append(visitor.getRepresentation());
+                }
+                bld.append("</group>");
+            }
+            else{
+                simpleShape.accept(visitor);
+                bld.append(visitor.getRepresentation());
+            }
         }
         bld.append("</shapes>");
         bld.append("</root>");
@@ -178,6 +195,18 @@ public class JDrawingFrame extends JFrame{
         }
     }
 
+    private void groupSelectedShapes(){
+        ShapeGroup group = new ShapeGroup();
+        for (SimpleShape shape : shapesVisible) {
+            if(shape.isSelected()){
+                group.addShape(shape);
+            }
+        }
+        shapeGroups.add(group);
+        shapesVisible.removeAll(group.getShapes());
+        shapesVisible.add(group);
+        paintComponents(getGraphics());
+    }
     @Override
     public void paintComponents(Graphics g) {
         super.paintComponents(g);

@@ -2,6 +2,7 @@ import fr.uga.miage.m1.persistence.JSonVisitor;
 import fr.uga.miage.m1.persistence.XMLVisitor;
 import fr.uga.miage.m1.shapes.ShapeFactory;
 import fr.uga.miage.m1.shapes.SimpleShape;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -11,14 +12,20 @@ import org.mockito.junit.jupiter.MockitoExtension;
 import java.awt.*;
 import java.awt.geom.Ellipse2D;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 
 @ExtendWith(MockitoExtension.class)
-class TestCircle {
+class CircleTest {
 
+    private SimpleShape simpleShape;
+    @BeforeEach
+    void setUp() {
+        simpleShape = ShapeFactory.getInstance().createSimpleShape(ShapeFactory.Shapes.CIRCLE, 10, 10);
+    }
     @Mock
     private Graphics2D mockGraphics;
 
@@ -124,4 +131,63 @@ class TestCircle {
         // Vérifiez que setStroke est appelé avec le bon BasicStroke
         verify(mockGraphics, times(1)).setStroke(any(BasicStroke.class));
     }
+
+
+    @Test
+     void testDrawSelected() {
+        SimpleShape circle = ShapeFactory.getInstance().createSimpleShape(ShapeFactory.Shapes.CIRCLE,100,100);
+
+        circle.setSelected(true);
+
+        // Act
+        circle.draw(mockGraphics);
+
+        // Assert
+        verify(mockGraphics).setColor(Color.GREEN);
+        verify(mockGraphics, times(2)).setStroke(any(BasicStroke.class));
+        verify(mockGraphics, times(2)).draw(any(Ellipse2D.class));
+    }
+
+
+    @Test
+     void testSetSelected() {
+
+        assertFalse(simpleShape.isSelected());
+
+
+        simpleShape.setSelected(true);
+
+
+        assertTrue(simpleShape.isSelected());
+    }
+
+    @Test
+     void testSetSelectedFalse() {
+
+        simpleShape.setSelected(true);
+
+
+        simpleShape.setSelected(false);
+
+        assertFalse(simpleShape.isSelected());
+    }
+
+    @Test
+     void testIsSelected() {
+
+        simpleShape.setSelected(true);
+
+
+        assertTrue(simpleShape.isSelected());
+    }
+
+    @Test
+     void testIsNotSelected() {
+
+        simpleShape.setSelected(false);
+
+
+        assertFalse(simpleShape.isSelected());
+    }
+
 }

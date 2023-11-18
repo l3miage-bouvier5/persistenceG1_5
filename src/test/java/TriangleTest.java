@@ -2,6 +2,7 @@ import fr.uga.miage.m1.persistence.JSonVisitor;
 import fr.uga.miage.m1.persistence.XMLVisitor;
 import fr.uga.miage.m1.shapes.ShapeFactory;
 import fr.uga.miage.m1.shapes.SimpleShape;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -9,16 +10,22 @@ import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 
 import java.awt.*;
-import java.awt.geom.GeneralPath;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
+
+import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 
 @ExtendWith(MockitoExtension.class)
-class TestTriangle {
+class TriangleTest {
 
+    private SimpleShape simpleShape;
+    @BeforeEach
+    void setUp() {
+        simpleShape = ShapeFactory.getInstance().createSimpleShape(ShapeFactory.Shapes.TRIANGLE, 10, 10);
+    }
     @Mock
     private Graphics2D mockGraphics;
     @Test
@@ -76,27 +83,36 @@ class TestTriangle {
     @Test
     @DisplayName("Test draw triangle")
     void testDraw() {
-        // Arrange
+
         SimpleShape triangle = ShapeFactory.getInstance().createSimpleShape(ShapeFactory.Shapes.TRIANGLE,100,100);
+        triangle.draw(mockGraphics);
+
+        verify(mockGraphics, times(1)).setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
+
+        verify(mockGraphics, times(1)).fill(any(Polygon.class));
+        verify(mockGraphics, times(1)).draw(any(Polygon.class));
+
+        verify(mockGraphics, times(1)).setPaint(any(GradientPaint.class));
+        verify(mockGraphics, times(1)).setColor(Color.BLACK);
+
+        verify(mockGraphics, times(1)).setStroke(any(BasicStroke.class));
+    }
+
+
+    @Test
+    void testDrawSelected() {
+        SimpleShape triangle = ShapeFactory.getInstance().createSimpleShape(ShapeFactory.Shapes.TRIANGLE,100,100);
+
+        triangle.setSelected(true);
+
         // Act
         triangle.draw(mockGraphics);
 
         // Assert
-        // Vérifiez que setRenderingHint est appelé avec les bons arguments
-        verify(mockGraphics, times(1)).setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
-
-        // Vérifiez que fill et draw de GeneralPath sont appelés avec les bons arguments
-        verify(mockGraphics, times(1)).fill(any(GeneralPath.class));
-        verify(mockGraphics, times(1)).draw(any(GeneralPath.class));
-
-        // Vérifiez que setPaint et setColor sont appelés avec les bonnes couleurs
-        verify(mockGraphics, times(1)).setPaint(any(GradientPaint.class));
-        verify(mockGraphics, times(1)).setColor(Color.BLACK);
-
-        // Vérifiez que setStroke est appelé avec le bon BasicStroke
-        verify(mockGraphics, times(1)).setStroke(any(BasicStroke.class));
+        verify(mockGraphics).setColor(Color.GREEN);
+        verify(mockGraphics, times(2)).setStroke(any(BasicStroke.class));
+        verify(mockGraphics).drawPolygon(any(Polygon.class));
     }
-
     @Test
     @DisplayName("Test move triangle")
     void testMove(){
@@ -127,5 +143,40 @@ class TestTriangle {
 
         assertEquals(triangle.getY(), moveY);
         assertEquals(triangle.getX(), moveX);
+    }
+    @Test
+     void testSetSelected() {
+
+        assertFalse(simpleShape.isSelected());
+
+        simpleShape.setSelected(true);
+
+
+        assertTrue(simpleShape.isSelected());
+    }
+
+    @Test
+     void testSetSelectedFalse() {
+        simpleShape.setSelected(true);
+
+
+        simpleShape.setSelected(false);
+
+        assertFalse(simpleShape.isSelected());
+    }
+
+    @Test
+     void testIsSelected() {
+        // Arrange
+        simpleShape.setSelected(true);
+
+        assertTrue(simpleShape.isSelected());
+    }
+    @Test
+     void testIsNotSelected() {
+        // Arrange
+        simpleShape.setSelected(false);
+
+        assertFalse(simpleShape.isSelected());
     }
 }
