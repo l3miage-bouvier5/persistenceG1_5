@@ -54,6 +54,7 @@ public class Client implements MouseListener, MouseMotionListener {
             shape = ShapeFactory.getInstance().createSimpleShape(frame.getmSelected(), evt.getX(), evt.getY());
             this.invoker.addCommand(new AddShapeCommand(frame, shape));
             this.invoker.execute();
+
         }
     }
 
@@ -64,6 +65,7 @@ public class Client implements MouseListener, MouseMotionListener {
      */
     @Override
     public void mousePressed(MouseEvent evt) {
+
         List<SimpleShape> shapes = frame.getShapesVisible();
         for(int i = shapes.size()-1; i >= 0; i--){
             SimpleShape shape = shapes.get(i);
