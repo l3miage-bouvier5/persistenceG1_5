@@ -240,6 +240,25 @@ public class JDrawingFrame extends JFrame{
         paintComponents(getGraphics());
     }
 
+    public void moveShape(SimpleShape shape, int diffX, int diffY){
+        shape.move(diffX, diffY);
+    }
+
+    public void moveBackShape(SimpleShape shape, Map<SimpleShape, Point> initialPositions, int startX, int startY){
+        if(shape.getType().equals("group")){
+            for(SimpleShape s : ((ShapeGroup) shape).getShapes()){
+                Point initialPosition = initialPositions.get(s);
+                if (initialPosition != null) {
+                    s.goTo(initialPosition.x, initialPosition.y);
+                }
+            }
+        }else {
+            shape.goTo(startX,startY);
+        }
+        paintComponents(getGraphics());
+
+    }
+
 
 
     public JPanel getmPanel() {
