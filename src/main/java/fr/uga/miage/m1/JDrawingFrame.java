@@ -200,6 +200,7 @@ public class JDrawingFrame extends JFrame{
         for (SimpleShape shape : shapesVisible) {
             if(shape.isSelected()){
                 group.addShape(shape);
+                shape.setGroup(group);
             }
         }
         shapeGroups.add(group);
@@ -228,7 +229,14 @@ public class JDrawingFrame extends JFrame{
     }
 
     public void removeShape(SimpleShape shape){
-        this.shapesVisible.remove(shape);
+        if(shape.isSelected()){
+            ((ShapeGroup) shape.getGroup()).removeShape(shape);
+        }
+        else{
+
+            this.shapesVisible.remove(shape);
+        }
+
         paintComponents(getGraphics());
     }
 

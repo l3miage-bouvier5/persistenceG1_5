@@ -46,4 +46,8 @@ public interface SimpleShape extends Visitable {
     public void setSelected(boolean selected);
 
     public boolean isSelected();
+
+    public void setGroup(SimpleShape group);
+
+    public SimpleShape getGroup();
 }

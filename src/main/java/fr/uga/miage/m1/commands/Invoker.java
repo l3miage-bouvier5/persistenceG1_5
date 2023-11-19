@@ -38,6 +38,15 @@ public class Invoker {
         return this.commands.get(this.commands.size() - 1);
     }
 
+    public void removeLastCommand(){
+        this.commands.remove(this.commands.size() - 1);
+    }
+
+    public List<Command> getHistory() {
+        return history;
+    }
+
+
 
 
 }

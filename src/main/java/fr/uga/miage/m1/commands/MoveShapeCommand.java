@@ -10,7 +10,6 @@ import java.util.Map;
 
 public class MoveShapeCommand implements Command{
 
-
     private Map<SimpleShape, Point> initialPositions = new HashMap<>();
     private int startX;
     private int startY;
