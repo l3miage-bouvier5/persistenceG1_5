@@ -28,6 +28,8 @@ import fr.uga.miage.m1.persistence.Visitor;
 
 class Circle implements SimpleShape {
 
+    private SimpleShape group = null;
+
     int mX;
 
     int mY;
@@ -122,5 +124,15 @@ class Circle implements SimpleShape {
     @Override
     public boolean isSelected() {
         return isSelected;
+    }
+
+    @Override
+    public void setGroup(SimpleShape group) {
+        this.group = group;
+    }
+
+    @Override
+    public SimpleShape getGroup() {
+        return group;
     }
 }

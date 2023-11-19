@@ -10,7 +10,6 @@ import java.util.Map;
 
 public class MoveShapeCommand implements Command{
 
-
     private Map<SimpleShape, Point> initialPositions = new HashMap<>();
     private int startX;
     private int startY;
@@ -39,22 +38,15 @@ public class MoveShapeCommand implements Command{
     }
     @Override
     public void execute() {
-        shape.move(diffX, diffY);
+        frame.moveShape(shape, diffX, diffY);
     }
 
     @Override
     public void undo() {
-        if(shape.getType().equals("group")){
-            for(SimpleShape s : ((ShapeGroup) shape).getShapes()){
-                Point initialPosition = initialPositions.get(s);
-                if (initialPosition != null) {
-                    s.goTo(initialPosition.x, initialPosition.y);
-                }
-            }
-        }else {
-            shape.goTo(startX,startY);
-        }
-        frame.paintComponents(frame.getGraphics());
+
+        frame.moveBackShape(shape, initialPositions, startX, startY);
+
+
     }
 
     @Override

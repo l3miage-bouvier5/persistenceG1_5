@@ -200,6 +200,7 @@ public class JDrawingFrame extends JFrame{
         for (SimpleShape shape : shapesVisible) {
             if(shape.isSelected()){
                 group.addShape(shape);
+                shape.setGroup(group);
             }
         }
         shapeGroups.add(group);
@@ -228,8 +229,34 @@ public class JDrawingFrame extends JFrame{
     }
 
     public void removeShape(SimpleShape shape){
-        this.shapesVisible.remove(shape);
+        if(shape.isSelected()){
+            ((ShapeGroup) shape.getGroup()).removeShape(shape);
+        }
+        else{
+
+            this.shapesVisible.remove(shape);
+        }
+
         paintComponents(getGraphics());
+    }
+
+    public void moveShape(SimpleShape shape, int diffX, int diffY){
+        shape.move(diffX, diffY);
+    }
+
+    public void moveBackShape(SimpleShape shape, Map<SimpleShape, Point> initialPositions, int startX, int startY){
+        if(shape.getType().equals("group")){
+            for(SimpleShape s : ((ShapeGroup) shape).getShapes()){
+                Point initialPosition = initialPositions.get(s);
+                if (initialPosition != null) {
+                    s.goTo(initialPosition.x, initialPosition.y);
+                }
+            }
+        }else {
+            shape.goTo(startX,startY);
+        }
+        paintComponents(getGraphics());
+
     }
 
 

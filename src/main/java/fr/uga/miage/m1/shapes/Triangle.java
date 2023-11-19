@@ -29,6 +29,7 @@ import fr.uga.miage.m1.persistence.Visitor;
  * @author <a href="mailto:christophe.saint-marcel@univ-grenoble-alpes.fr">Christophe</a>
  */
 class Triangle implements SimpleShape {
+    private SimpleShape group = null;
 
     int mX;
 
@@ -120,5 +121,15 @@ class Triangle implements SimpleShape {
     @Override
     public boolean isSelected() {
         return isSelected;
+    }
+
+    @Override
+    public void setGroup(SimpleShape group) {
+        this.group = group;
+    }
+
+    @Override
+    public SimpleShape getGroup() {
+        return group;
     }
 }

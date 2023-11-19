@@ -38,7 +38,6 @@ public class ShapeGroup implements SimpleShape{
 
     @Override
     public boolean contains(int x, int y) {
-
         boolean res = false;
         for (SimpleShape shape : shapes){
             if(shape.contains(x,y)){
@@ -81,5 +80,15 @@ public class ShapeGroup implements SimpleShape{
     @Override
     public boolean isSelected() {
         return false;
+    }
+
+    @Override
+    public void setGroup(SimpleShape group) {
+        // rien
+    }
+
+    @Override
+    public SimpleShape getGroup() {
+        return null;
     }
 }

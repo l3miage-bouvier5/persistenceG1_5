@@ -7,6 +7,7 @@ import java.awt.*;
 
 class Cube implements SimpleShape{
 
+    private SimpleShape group;
     private int mX;
     private int mY;
 
@@ -53,6 +54,11 @@ class Cube implements SimpleShape{
         return mY;
     }
 
+    @Override
+    public void setGroup(SimpleShape group) {
+        this.group = group;
+    }
+
 
     @Override
     public void accept(Visitor visitor) {
@@ -86,7 +92,10 @@ class Cube implements SimpleShape{
         this.mY = y;
     }
 
-
+    @Override
+    public SimpleShape getGroup() {
+        return group;
+    }
     public void setSelected(boolean selected) {
         this.isSelected = selected;
     }
@@ -95,4 +104,6 @@ class Cube implements SimpleShape{
     public boolean isSelected() {
         return isSelected;
     }
+
+
 }

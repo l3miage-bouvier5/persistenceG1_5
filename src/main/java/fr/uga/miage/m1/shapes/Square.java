@@ -33,6 +33,8 @@ import fr.uga.miage.m1.persistence.Visitor;
  */
 class Square implements SimpleShape {
 
+    private SimpleShape group = null;
+
     int mX;
 
     int mY;
@@ -95,6 +97,17 @@ class Square implements SimpleShape {
     public boolean isSelected() {
         return isSelected;
     }
+
+    @Override
+    public void setGroup(SimpleShape group) {
+        this.group = group;
+    }
+
+    @Override
+    public SimpleShape getGroup() {
+        return group;
+    }
+
     public int getX() {
         return mX;
     }
