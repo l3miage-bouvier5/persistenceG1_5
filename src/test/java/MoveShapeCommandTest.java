@@ -34,7 +34,7 @@ class MoveShapeCommandTest {
         moveShapeCommand.setDiff(10, 20);
         moveShapeCommand.execute();
 
-        verify(shapeMock).move(10, 20);
+        verify(frameMock).moveShape(shapeMock,10, 20);
     }
 
 
