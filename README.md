@@ -12,8 +12,8 @@ fonctionnalité.
 Dorénavent, chaque itération est documentée au niveau du dossier [documentation](./documentation) à la racine du projet.
 
 - Itération 1 : L'ajout de la fonctionnalité 'export JSON' qui fonctionne correctement.
-- [Itération 2](./documentation/iteration_2.md): L'ajout d'une deuxième fonctionnalité 'CTRL Z' qui pour  le moment ne fonctionne pas correctement. Bien que nous arrivons à supprimer le shape qu'on vient d'ajouter, le problème vient du fait que l'on redessine les figures qui restent par rapport à la frame et pas par rapport au Panel. Donc les formes se redessinent pas aux positions ou elles étaient avant.
-
+- [Itération 2](./documentation/iteration_2.md): L'ajout d'une deuxième fonctionnalité 'CTRL Z' qui annule l'ajout d'un shape.
+- [Itération 3](./documentation/iteration_3.md): Déplacement de shape - Sélection de shapes dans le but de les regrouper.
 
 ## Mise en place du projet
 ### Prérequis
@@ -21,11 +21,13 @@ Dorénavent, chaque itération est documentée au niveau du dossier [documentati
 - Java 8
 - Maven 3.6.3
 - IDE (IntelliJ IDEA, Eclipse, VSCode, ...)
-- StarUML (visualisation des diagrammes)
 
 ### Structure du projet
-- Le dossier src comprend tous les fichiers source du projet
-- Le dossier diagrams contiendra tous les diagrammes requis pour la modélisation du projet
+- Le dossier [src](./src) comprend tous les fichiers source du projet
+- [diagrams](./diagrams) contiendra tous les diagrammes requis pour la modélisation du projet
+- [documentation](./documentation) est mis à jour à chaque itération pour décrire l'avancée du projet
+- [lib](./lib) sert à l'intégration du shape Cube dans le projet
+- [outputs](./outputs) est le repertoire cible de l'export des figures créées
 
 ### Installation
 
