@@ -34,6 +34,8 @@ public class ImportManager {
             selectedFile = jFileChooser.getSelectedFile();
             try {
                 DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
+                factory.setFeature("http://apache.org/xml/features/disallow-doctype-decl", true);
+
                 DocumentBuilder dbuilder = factory.newDocumentBuilder();
 
                 Document document = dbuilder.parse(selectedFile);
@@ -82,7 +84,6 @@ public class ImportManager {
         String type = shapeElementInGroup.getElementsByTagName("type").item(0).getTextContent();
         int x = Integer.parseInt(shapeElementInGroup.getElementsByTagName("x").item(0).getTextContent());
         int y = Integer.parseInt(shapeElementInGroup.getElementsByTagName("y").item(0).getTextContent());
-        System.out.println("x:"  + x +  "y:" +  y);
         if (type.equals("cube"))
             return ShapeFactory.getInstance().createSimpleShape(type, x, y);
         return ShapeFactory.getInstance().createSimpleShape(type, x+25, y+25);

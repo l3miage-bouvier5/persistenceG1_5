@@ -1,29 +1,16 @@
 package fr.uga.miage.m1;
 
-import fr.uga.miage.m1.persistence.JSonVisitor;
-import fr.uga.miage.m1.persistence.XMLVisitor;
 import fr.uga.miage.m1.shapes.ShapeFactory;
 import fr.uga.miage.m1.shapes.ShapeGroup;
 import fr.uga.miage.m1.shapes.SimpleShape;
 import fr.uga.miage.m1.reader.ImportManager;
 import fr.uga.miage.m1.reader.ExportManager;
-import org.w3c.dom.Document;
-import org.w3c.dom.Element;
-import org.w3c.dom.NodeList;
-import org.xml.sax.SAXException;
 
 
 import javax.swing.*;
-import javax.swing.filechooser.FileNameExtensionFilter;
-import javax.xml.parsers.DocumentBuilder;
-import javax.xml.parsers.DocumentBuilderFactory;
-import javax.xml.parsers.ParserConfigurationException;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.io.File;
-import java.io.IOException;
-import java.io.PrintWriter;
 import java.util.ArrayList;
 import java.util.EnumMap;
 import java.util.List;
@@ -49,11 +36,9 @@ public class JDrawingFrame extends JFrame {
 
     private static final String OUTPUT = "outputs/";
 
-    private final ExportManager exportManager = new ExportManager(OUTPUT);
+    private final transient ExportManager exportManager = new ExportManager(OUTPUT);
 
-    private final ImportManager importManager = new ImportManager();
-
-    private final JFileChooser jFileChooser;
+    private final transient ImportManager importManager = new ImportManager();
 
     private static final long serialVersionUID = 1L;
 
@@ -115,7 +100,6 @@ public class JDrawingFrame extends JFrame {
         addButton("Import XML");
         setPreferredSize(new Dimension(800, 800));
 
-        this.jFileChooser = new JFileChooser(".");
     }
 
     /**
@@ -145,21 +129,22 @@ public class JDrawingFrame extends JFrame {
         ActionListener actionListener =
                 e -> {
                     try {
+                        String successMessageTitle = "Success";
                         if (label.contains("Export JSON")) {
                             this.exportManager.exportJSON(shapesVisible);
-                            JOptionPane.showMessageDialog(null, "JSON export successful!", "Success", JOptionPane.INFORMATION_MESSAGE);
+                            JOptionPane.showMessageDialog(null, "JSON export successful!", successMessageTitle, JOptionPane.INFORMATION_MESSAGE);
                         }
                         else if (label.contains("Export XML")){
                             this.exportManager.exportXML(shapesVisible);
-                            JOptionPane.showMessageDialog(null, "XML export successful!", "Success", JOptionPane.INFORMATION_MESSAGE);
+                            JOptionPane.showMessageDialog(null, "XML export successful!", successMessageTitle, JOptionPane.INFORMATION_MESSAGE);
 
                         }
                         else if (label.equals("Group"))
                             groupSelectedShapes();
-                        else if (label.equals("Import XML"))
+                        else if (label.equals("Import XML")) {
                             this.shapesVisible = this.importManager.importXML();
                             paintComponents(this.getGraphics());
-
+                        }
                     } catch (Exception ex) {
                         LOGGER.warning(ex.getMessage());
                         JOptionPane.showMessageDialog(null, "A problem occurred", "Fail", JOptionPane.ERROR_MESSAGE);
