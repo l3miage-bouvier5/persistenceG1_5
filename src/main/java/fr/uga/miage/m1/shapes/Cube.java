@@ -28,7 +28,7 @@ class Cube implements SimpleShape{
         CubePanel c = new CubePanel(size, mX, mY);
 
         c.paintComponent(g2);
-        if (isSelected) {
+        if (isSelected || getGroup() != null) {
             int borderSize = 1;
             g2.setColor(Color.GREEN);
             g2.setStroke(new BasicStroke(borderSize));

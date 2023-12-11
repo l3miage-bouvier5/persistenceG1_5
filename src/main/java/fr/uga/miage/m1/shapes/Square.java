@@ -60,7 +60,7 @@ class Square implements SimpleShape {
         g2.setColor(Color.black);
         g2.setStroke(wideStroke);
         g2.draw(new Rectangle2D.Double(mX, mY, 50, 50));
-        if (isSelected) {
+        if (isSelected || getGroup() != null) {
             int borderSize = 1;
             g2.setColor(Color.GREEN);
             g2.setStroke(new BasicStroke(borderSize));

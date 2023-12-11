@@ -5,12 +5,23 @@ import fr.uga.miage.m1.persistence.XMLVisitor;
 import fr.uga.miage.m1.shapes.ShapeFactory;
 import fr.uga.miage.m1.shapes.ShapeGroup;
 import fr.uga.miage.m1.shapes.SimpleShape;
-import fr.uga.miage.m1.reader;
+import fr.uga.miage.m1.reader.ImportManager;
+import fr.uga.miage.m1.reader.ExportManager;
+import org.w3c.dom.Document;
+import org.w3c.dom.Element;
+import org.w3c.dom.NodeList;
+import org.xml.sax.SAXException;
+
 
 import javax.swing.*;
+import javax.swing.filechooser.FileNameExtensionFilter;
+import javax.xml.parsers.DocumentBuilder;
+import javax.xml.parsers.DocumentBuilderFactory;
+import javax.xml.parsers.ParserConfigurationException;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.io.File;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.util.ArrayList;
@@ -26,7 +37,8 @@ import java.util.logging.Logger;
  *
  * @author <a href="mailto:christophe.saint-marcel@univ-grenoble-alpes.fr">Christophe</a>
  */
-public class JDrawingFrame extends JFrame{
+public class JDrawingFrame extends JFrame {
+
 
     private String pathToImages = "src/main/java/fr/uga/miage/m1/images/";
     private static final Logger LOGGER = Logger.getLogger("JDrawingFrame");
@@ -35,7 +47,13 @@ public class JDrawingFrame extends JFrame{
 
     private Point mouseLastPosition;
 
-    private static final String OUTPUT = "outputs/output";
+    private static final String OUTPUT = "outputs/";
+
+    private final ExportManager exportManager = new ExportManager(OUTPUT);
+
+    private final ImportManager importManager = new ImportManager();
+
+    private final JFileChooser jFileChooser;
 
     private static final long serialVersionUID = 1L;
 
@@ -60,6 +78,7 @@ public class JDrawingFrame extends JFrame{
 
     /**
      * Default constructor that populates the main window.
+     *
      * @param frameName
      */
     public JDrawingFrame(String frameName, Client client) {
@@ -95,11 +114,13 @@ public class JDrawingFrame extends JFrame{
         addButton("Group");
         addButton("Import XML");
         setPreferredSize(new Dimension(800, 800));
-        
+
+        this.jFileChooser = new JFileChooser(".");
     }
 
     /**
      * Injects an available <tt>SimpleShape</tt> into the drawing frame.
+     *
      * @param name The name of the injected <tt>SimpleShape</tt>.
      * @param icon The icon associated with the injected <tt>SimpleShape</tt>.
      */
@@ -117,23 +138,31 @@ public class JDrawingFrame extends JFrame{
         repaint();
     }
 
-    private void addButton(String label){
+    private void addButton(String label) {
         JButton button = new JButton(label);
         button.setBorderPainted(false);
         button.setActionCommand(label);
         ActionListener actionListener =
                 e -> {
                     try {
-                        if(label.contains("JSON"))
-                            exportJSON();
-                        else if (label.contains("XML"))
-                            exportXML();
+                        if (label.contains("Export JSON")) {
+                            this.exportManager.exportJSON(shapesVisible);
+                            JOptionPane.showMessageDialog(null, "JSON export successful!", "Success", JOptionPane.INFORMATION_MESSAGE);
+                        }
+                        else if (label.contains("Export XML")){
+                            this.exportManager.exportXML(shapesVisible);
+                            JOptionPane.showMessageDialog(null, "XML export successful!", "Success", JOptionPane.INFORMATION_MESSAGE);
+
+                        }
                         else if (label.equals("Group"))
                             groupSelectedShapes();
                         else if (label.equals("Import XML"))
                             importXML();
+                            paintComponents(this.getGraphics());
+
                     } catch (Exception ex) {
                         LOGGER.warning(ex.getMessage());
+                        JOptionPane.showMessageDialog(null, "A problem occurred", "Fail", JOptionPane.ERROR_MESSAGE);
                     }
                 };
         button.addActionListener(actionListener);
@@ -142,74 +171,66 @@ public class JDrawingFrame extends JFrame{
         repaint();
     }
 
+    public void importXML() throws ParserConfigurationException, IOException, SAXException {
+        int result = jFileChooser.showOpenDialog(null);
+        File selectedFile = null;
+        if (result == JFileChooser.APPROVE_OPTION) {
+            selectedFile = jFileChooser.getSelectedFile();
+            try {
+                DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
+                DocumentBuilder dbuilder = factory.newDocumentBuilder();
 
-    private void exportJSON() throws IOException{
-        StringBuilder bld = new StringBuilder();
-        JSonVisitor visitor = new JSonVisitor();
-        bld.append("{\"shapes\":[");
-        for (SimpleShape simpleShape : shapesVisible) {
-            if(simpleShape.getType().equals("group")){
-                bld.append("{\"group\":[");
-                for (SimpleShape shape : ((ShapeGroup) simpleShape).getShapes()) {
-                    shape.accept(visitor);
-                    bld.append(visitor.getRepresentation());
-                    bld.append(",");
+                Document document = dbuilder.parse(selectedFile);
+
+                Element root = document.getDocumentElement();
+
+                NodeList groupList = root.getElementsByTagName("group");
+
+                NodeList shapeList = root.getElementsByTagName("shape");
+
+                for (int i = 0; i < groupList.getLength(); i++) {
+                    Element groupElement = (Element) groupList.item(i);
+                    ShapeGroup group = new ShapeGroup();
+
+                    NodeList shapeListInGroup = groupElement.getElementsByTagName("shape");
+
+                    for (int j = 0; j < shapeListInGroup.getLength(); j++) {
+                        Element shapeElementInGroup = (Element) shapeList.item(j);
+                        SimpleShape shape = getShape(shapeElementInGroup);
+                        shape.setGroup(group);
+                        group.addShape(shape);
+                    }
+                    shapesVisible.add(group);
                 }
-                bld.deleteCharAt(bld.length()-1);
-                bld.append("]},");
-            }else{
-            simpleShape.accept(visitor);
-            bld.append(visitor.getRepresentation());
-            bld.append(",");
+                for (int i = 0; i < shapeList.getLength(); i++) {
+                    Element shapeElement = (Element) shapeList.item(i);
+
+                    Element parentElement = (Element) shapeElement.getParentNode();
+                    boolean isInGroup = parentElement != null && parentElement.getTagName().equals("group");
+                    if (!isInGroup) {
+                        shapesVisible.add(getShape(shapeElement));
+                    }
+                }
+            } catch (ParserConfigurationException ex) {
+                throw new ParserConfigurationException(ex.getMessage());
+            } catch (IOException ex) {
+                throw new IOException(ex.getMessage());
+            } catch (SAXException ex) {
+                throw new SAXException(ex.getMessage());
             }
-        }
-        bld.deleteCharAt(bld.length()-1);
-        bld.append("]}");
-        try(PrintWriter writer  = new PrintWriter(OUTPUT+".json")) {
-            writer.println(bld);
-            JOptionPane.showMessageDialog(null, "JSON export successful!", "Success", JOptionPane.INFORMATION_MESSAGE);
-        } catch (IOException e) {
-            JOptionPane.showMessageDialog(null, "JSON export failed!", "Error", JOptionPane.ERROR_MESSAGE);
-            e.printStackTrace();
         }
     }
 
-
-    private void exportXML() throws IOException{
-        StringBuilder bld = new StringBuilder();
-        XMLVisitor visitor = new XMLVisitor();
-        bld.append("<?xml version=\"1.0\" encoding=\"UTF-8\" ?>");
-        bld.append("<root>");
-        bld.append("<shapes>");
-        for (SimpleShape simpleShape : shapesVisible) {
-            if(simpleShape.getType().equals("group")){
-                bld.append("<group>");
-                for (SimpleShape shape : ((ShapeGroup) simpleShape).getShapes()) {
-                    shape.accept(visitor);
-                    bld.append(visitor.getRepresentation());
-                }
-                bld.append("</group>");
-            }
-            else{
-                simpleShape.accept(visitor);
-                bld.append(visitor.getRepresentation());
-            }
-        }
-        bld.append("</shapes>");
-        bld.append("</root>");
-        try(PrintWriter writer  = new PrintWriter(OUTPUT+".xml")) {
-            writer.println(bld);
-            JOptionPane.showMessageDialog(null, "XML export successful!", "Success", JOptionPane.INFORMATION_MESSAGE);
-        } catch (IOException e) {
-            JOptionPane.showMessageDialog(null, "XML export failed!", "Error", JOptionPane.ERROR_MESSAGE);
-            e.printStackTrace();
-        }
+    private SimpleShape getShape(Element shapeElementInGroup) {
+        String type = shapeElementInGroup.getElementsByTagName("type").item(0).getTextContent();
+        int x = Integer.parseInt(shapeElementInGroup.getElementsByTagName("x").item(0).getTextContent());
+        int y = Integer.parseInt(shapeElementInGroup.getElementsByTagName("y").item(0).getTextContent());
+        return ShapeFactory.getInstance().createSimpleShape(type, x, y);
     }
-
-    private void groupSelectedShapes(){
+    private void groupSelectedShapes() {
         ShapeGroup group = new ShapeGroup();
         for (SimpleShape shape : shapesVisible) {
-            if(shape.isSelected()){
+            if (shape.isSelected()) {
                 group.addShape(shape);
                 shape.setGroup(group);
             }
@@ -220,13 +241,14 @@ public class JDrawingFrame extends JFrame{
         paintComponents(getGraphics());
         JOptionPane.showMessageDialog(null, "Group created!", "Success", JOptionPane.INFORMATION_MESSAGE);
     }
+
     @Override
     public void paintComponents(Graphics g) {
         super.paintComponents(g);
         for (SimpleShape simpleShape : shapesVisible) {
             simpleShape.draw((Graphics2D) this.mPanel.getGraphics());
         }
-        if(movingShape != null){
+        if (movingShape != null) {
             movingShape.draw((Graphics2D) this.mPanel.getGraphics());
         }
     }
@@ -234,17 +256,16 @@ public class JDrawingFrame extends JFrame{
     /**
      * Undoes the last action
      */
-    public void addShape(SimpleShape shape){
+    public void addShape(SimpleShape shape) {
         LOGGER.info("ajout d'une shape");
         shape.draw((Graphics2D) this.mPanel.getGraphics());
         this.shapesVisible.add(shape);
     }
 
-    public void removeShape(SimpleShape shape){
-        if(shape.isSelected()){
+    public void removeShape(SimpleShape shape) {
+        if (shape.isSelected()) {
             ((ShapeGroup) shape.getGroup()).removeShape(shape);
-        }
-        else{
+        } else {
 
             this.shapesVisible.remove(shape);
         }
@@ -252,25 +273,24 @@ public class JDrawingFrame extends JFrame{
         paintComponents(getGraphics());
     }
 
-    public void moveShape(SimpleShape shape, int diffX, int diffY){
+    public void moveShape(SimpleShape shape, int diffX, int diffY) {
         shape.move(diffX, diffY);
     }
 
-    public void moveBackShape(SimpleShape shape, Map<SimpleShape, Point> initialPositions, int startX, int startY){
-        if(shape.getType().equals("group")){
-            for(SimpleShape s : ((ShapeGroup) shape).getShapes()){
+    public void moveBackShape(SimpleShape shape, Map<SimpleShape, Point> initialPositions, int startX, int startY) {
+        if (shape.getType().equals("group")) {
+            for (SimpleShape s : ((ShapeGroup) shape).getShapes()) {
                 Point initialPosition = initialPositions.get(s);
                 if (initialPosition != null) {
                     s.goTo(initialPosition.x, initialPosition.y);
                 }
             }
-        }else {
-            shape.goTo(startX,startY);
+        } else {
+            shape.goTo(startX, startY);
         }
         paintComponents(getGraphics());
 
     }
-
 
 
     public JPanel getmPanel() {
@@ -284,7 +304,7 @@ public class JDrawingFrame extends JFrame{
     public JLabel getmLabel() {
         return mLabel;
     }
-    
+
 
     public List<SimpleShape> getShapesVisible() {
         return shapesVisible;
@@ -314,7 +334,7 @@ public class JDrawingFrame extends JFrame{
     private class ShapeActionListener implements ActionListener {
 
         public void actionPerformed(ActionEvent evt) {
-            for (Map.Entry<ShapeFactory.Shapes, JButton> entry: mButtons.entrySet()) {
+            for (Map.Entry<ShapeFactory.Shapes, JButton> entry : mButtons.entrySet()) {
                 ShapeFactory.Shapes shape = entry.getKey();
                 JButton btn = entry.getValue();
                 if (evt.getActionCommand().equals(shape.toString())) {
@@ -328,3 +348,4 @@ public class JDrawingFrame extends JFrame{
         }
     }
 }
+  

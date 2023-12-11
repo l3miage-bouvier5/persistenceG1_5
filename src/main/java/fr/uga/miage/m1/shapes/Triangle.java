@@ -59,7 +59,7 @@ class Triangle implements SimpleShape {
         g2.setColor(Color.BLACK);
         g2.setStroke(wideStroke);
         g2.draw(polygon);
-        if (isSelected) {
+        if (isSelected || getGroup() != null) {
             int borderSize = 1;
             g2.setColor(Color.GREEN);
             g2.setStroke(new BasicStroke(borderSize));
