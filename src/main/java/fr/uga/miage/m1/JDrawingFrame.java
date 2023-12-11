@@ -164,6 +164,10 @@ public class JDrawingFrame extends JFrame{
         bld.append("]}");
         try(PrintWriter writer  = new PrintWriter(OUTPUT+".json")) {
             writer.println(bld);
+            JOptionPane.showMessageDialog(null, "JSON export successful!", "Success", JOptionPane.INFORMATION_MESSAGE);
+        } catch (IOException e) {
+            JOptionPane.showMessageDialog(null, "JSON export failed!", "Error", JOptionPane.ERROR_MESSAGE);
+            e.printStackTrace();
         }
     }
 
@@ -192,6 +196,10 @@ public class JDrawingFrame extends JFrame{
         bld.append("</root>");
         try(PrintWriter writer  = new PrintWriter(OUTPUT+".xml")) {
             writer.println(bld);
+            JOptionPane.showMessageDialog(null, "XML export successful!", "Success", JOptionPane.INFORMATION_MESSAGE);
+        } catch (IOException e) {
+            JOptionPane.showMessageDialog(null, "XML export failed!", "Error", JOptionPane.ERROR_MESSAGE);
+            e.printStackTrace();
         }
     }
 
@@ -207,6 +215,7 @@ public class JDrawingFrame extends JFrame{
         shapesVisible.removeAll(group.getShapes());
         shapesVisible.add(group);
         paintComponents(getGraphics());
+        JOptionPane.showMessageDialog(null, "Group created!", "Success", JOptionPane.INFORMATION_MESSAGE);
     }
     @Override
     public void paintComponents(Graphics g) {
