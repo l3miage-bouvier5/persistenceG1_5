@@ -26,7 +26,8 @@ public class ImportManager {
 
     }
 
-    public void importXML(List<SimpleShape> shapesVisible) throws ParserConfigurationException, IOException, SAXException {
+    public List<SimpleShape> importXML() throws ParserConfigurationException, IOException, SAXException {
+        List<SimpleShape> shapesVisible = new ArrayList<>();
         int result = jFileChooser.showOpenDialog(null);
         File selectedFile = null;
         if (result == JFileChooser.APPROVE_OPTION) {
@@ -74,13 +75,17 @@ public class ImportManager {
                 throw new SAXException(ex.getMessage());
             }
         }
+        return shapesVisible;
     }
 
     private SimpleShape getShape(Element shapeElementInGroup) {
         String type = shapeElementInGroup.getElementsByTagName("type").item(0).getTextContent();
         int x = Integer.parseInt(shapeElementInGroup.getElementsByTagName("x").item(0).getTextContent());
         int y = Integer.parseInt(shapeElementInGroup.getElementsByTagName("y").item(0).getTextContent());
-        return ShapeFactory.getInstance().createSimpleShape(type, x, y);
+        System.out.println("x:"  + x +  "y:" +  y);
+        if (type.equals("cube"))
+            return ShapeFactory.getInstance().createSimpleShape(type, x, y);
+        return ShapeFactory.getInstance().createSimpleShape(type, x+25, y+25);
     }
 
 }

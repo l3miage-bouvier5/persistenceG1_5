@@ -157,7 +157,7 @@ public class JDrawingFrame extends JFrame {
                         else if (label.equals("Group"))
                             groupSelectedShapes();
                         else if (label.equals("Import XML"))
-                            importXML();
+                            this.shapesVisible = this.importManager.importXML();
                             paintComponents(this.getGraphics());
 
                     } catch (Exception ex) {
@@ -169,63 +169,6 @@ public class JDrawingFrame extends JFrame {
         mToolbar.add(button);
         mToolbar.validate();
         repaint();
-    }
-
-    public void importXML() throws ParserConfigurationException, IOException, SAXException {
-        int result = jFileChooser.showOpenDialog(null);
-        File selectedFile = null;
-        if (result == JFileChooser.APPROVE_OPTION) {
-            selectedFile = jFileChooser.getSelectedFile();
-            try {
-                DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
-                DocumentBuilder dbuilder = factory.newDocumentBuilder();
-
-                Document document = dbuilder.parse(selectedFile);
-
-                Element root = document.getDocumentElement();
-
-                NodeList groupList = root.getElementsByTagName("group");
-
-                NodeList shapeList = root.getElementsByTagName("shape");
-
-                for (int i = 0; i < groupList.getLength(); i++) {
-                    Element groupElement = (Element) groupList.item(i);
-                    ShapeGroup group = new ShapeGroup();
-
-                    NodeList shapeListInGroup = groupElement.getElementsByTagName("shape");
-
-                    for (int j = 0; j < shapeListInGroup.getLength(); j++) {
-                        Element shapeElementInGroup = (Element) shapeList.item(j);
-                        SimpleShape shape = getShape(shapeElementInGroup);
-                        shape.setGroup(group);
-                        group.addShape(shape);
-                    }
-                    shapesVisible.add(group);
-                }
-                for (int i = 0; i < shapeList.getLength(); i++) {
-                    Element shapeElement = (Element) shapeList.item(i);
-
-                    Element parentElement = (Element) shapeElement.getParentNode();
-                    boolean isInGroup = parentElement != null && parentElement.getTagName().equals("group");
-                    if (!isInGroup) {
-                        shapesVisible.add(getShape(shapeElement));
-                    }
-                }
-            } catch (ParserConfigurationException ex) {
-                throw new ParserConfigurationException(ex.getMessage());
-            } catch (IOException ex) {
-                throw new IOException(ex.getMessage());
-            } catch (SAXException ex) {
-                throw new SAXException(ex.getMessage());
-            }
-        }
-    }
-
-    private SimpleShape getShape(Element shapeElementInGroup) {
-        String type = shapeElementInGroup.getElementsByTagName("type").item(0).getTextContent();
-        int x = Integer.parseInt(shapeElementInGroup.getElementsByTagName("x").item(0).getTextContent());
-        int y = Integer.parseInt(shapeElementInGroup.getElementsByTagName("y").item(0).getTextContent());
-        return ShapeFactory.getInstance().createSimpleShape(type, x, y);
     }
     private void groupSelectedShapes() {
         ShapeGroup group = new ShapeGroup();
