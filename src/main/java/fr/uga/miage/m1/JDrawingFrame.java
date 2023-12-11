@@ -5,6 +5,7 @@ import fr.uga.miage.m1.persistence.XMLVisitor;
 import fr.uga.miage.m1.shapes.ShapeFactory;
 import fr.uga.miage.m1.shapes.ShapeGroup;
 import fr.uga.miage.m1.shapes.SimpleShape;
+import fr.uga.miage.m1.reader;
 
 import javax.swing.*;
 import java.awt.*;
@@ -92,6 +93,7 @@ public class JDrawingFrame extends JFrame{
         addButton("Export JSON");
         addButton("Export XML");
         addButton("Group");
+        addButton("Import XML");
         setPreferredSize(new Dimension(800, 800));
         
     }
@@ -126,9 +128,10 @@ public class JDrawingFrame extends JFrame{
                             exportJSON();
                         else if (label.contains("XML"))
                             exportXML();
-                        else if (label.equals("Group")){
+                        else if (label.equals("Group"))
                             groupSelectedShapes();
-                        }
+                        else if (label.equals("Import XML"))
+                            importXML();
                     } catch (Exception ex) {
                         LOGGER.warning(ex.getMessage());
                     }
