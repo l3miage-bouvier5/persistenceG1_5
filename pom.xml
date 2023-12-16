@@ -37,9 +37,9 @@
             <version>1.0.1</version>
         </dependency>
         <dependency>
-            <groupId>fr.uga.miage.m1</groupId>
-            <artifactId>shape-reader</artifactId>
-            <version>1.0</version>
+            <groupId>leo.farah</groupId>
+            <artifactId>shapereader</artifactId>
+            <version>1.0.0</version>
         </dependency>
     </dependencies>
     <build>

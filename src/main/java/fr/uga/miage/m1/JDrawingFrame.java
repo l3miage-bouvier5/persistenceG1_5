@@ -1,5 +1,6 @@
 package fr.uga.miage.m1;
 
+
 import fr.uga.miage.m1.shapes.ShapeFactory;
 import fr.uga.miage.m1.shapes.ShapeGroup;
 import fr.uga.miage.m1.shapes.SimpleShape;
