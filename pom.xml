@@ -16,7 +16,7 @@
         <dependency>
             <groupId>org.junit.jupiter</groupId>
             <artifactId>junit-jupiter-engine</artifactId>
-            <version>5.4.0</version>
+            <version>5.9.2</version>
             <scope>test</scope>
         </dependency>
         <dependency>
@@ -37,9 +37,9 @@
             <version>1.0.1</version>
         </dependency>
         <dependency>
-            <groupId>leo.farah</groupId>
-            <artifactId>shapereader</artifactId>
-            <version>1.0.0</version>
+            <groupId>edu.uga.miage.m1</groupId>
+            <artifactId>edu.uga.shapereader</artifactId>
+            <version>1.0.1</version>
         </dependency>
     </dependencies>
     <build>
