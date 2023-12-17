@@ -1,6 +1,7 @@
 package fr.uga.miage.m1;
 
-
+import fr.uga.miage.m1.reader.ExportManager;
+import fr.uga.miage.m1.reader.ImportManager;
 import fr.uga.miage.m1.shapes.ShapeFactory;
 import fr.uga.miage.m1.shapes.ShapeGroup;
 import fr.uga.miage.m1.shapes.SimpleShape;
@@ -33,7 +34,6 @@ public class JDrawingFrame extends JFrame {
     private Point mouseLastPosition;
 
     private static final String OUTPUT = "outputs/";
-
     private final transient ExportManager exportManager = new ExportManager(OUTPUT);
 
     private final transient ImportManager importManager = new ImportManager();
